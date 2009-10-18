@@ -1,0 +1,1 @@
+"C:\Program Files\Microsoft Visual Studio 2008 SDK\VisualStudioIntegration\Tools\bin\MPLex.exe" /noparser /out:AsmHighlighterMPLexer.cs AsmHighlighterMPLexer.lex
