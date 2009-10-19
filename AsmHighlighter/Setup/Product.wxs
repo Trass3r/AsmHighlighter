@@ -6,8 +6,8 @@
 
 <?define ProductShortName = "AsmHighlighter" ?>
 <?define ProductDescription = "AsmHighlighter is an extension to Visual Studio 2008 that provides syntax highlighting for x86 ASM language." ?>
-<?define ProductVersion = "1.0.0" ?>
-<?define ProductVersionText = "1.0" ?>
+<?define ProductVersion = "1.1.0" ?>
+<?define ProductVersionText = "1.1" ?>
 <?define Manufacturer = "Alexandre Mutel" ?>
 <?define UpgradeCode = "B9DB0D8D-86C9-4f73-91A1-EA768D125128" ?>
 

@@ -16,8 +16,11 @@
 //  ------------------------------------------------------------------
 #endregion
 using System;
+using System.Collections;
 using System.Diagnostics;
 using System.Globalization;
+using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 using System.ComponentModel.Design;
 using Microsoft.VisualStudio;
@@ -59,7 +62,7 @@ namespace AsmHighlighter
                              "ASM Language",
                              0,
                              EnableCommenting = true,
-                             EnableFormatSelection =  false,
+                             EnableFormatSelection =  true,
                              EnableLineNumbers =  true                             
         //RequestStockColors = false
                              )]
@@ -100,9 +103,8 @@ namespace AsmHighlighter
             serviceContainer.AddService(typeof(AsmHighlighterLanguageService),
                                         langService,
                                         true);
-
         }
-        #endregion
+       #endregion
 
         #region Implementation of IVsInstalledProduct
 

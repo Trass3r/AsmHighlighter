@@ -11,7 +11,7 @@ PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
 <Include>
 
   <!-- GUIDs for the components -->
-  <?define Comp_LanguageService_Guid=dd9b8cde-96a0-4442-bf6f-083a7f43d453?>
+  <?define Comp_LanguageService_Guid=E767EF4D-28FE-4f99-AA6D-4107399D0837?>
 
   <!-- Token of the public key used to sign the assemblies -->
   <?define PublicKeyToken=null?>

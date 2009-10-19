@@ -19,6 +19,6 @@ namespace AsmHighlighter
 {
     public class AsmHighlighterVersion
     {
-        public const string VERSION = "1.0";
+        public const string VERSION = "1.1";
     }
 }

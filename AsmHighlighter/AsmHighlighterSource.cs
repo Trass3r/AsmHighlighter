@@ -34,19 +34,17 @@ namespace AsmHighlighter
             IVsTextLines pBuffer = GetTextLines();
             if (pBuffer != null)
             {
-//                List<EditSpan> changeList = new List<EditSpan>();
-
-                // BETA DISABLED
-                /*
                 List<EditSpan> changeList = AsmHighlighterFormatHelper.ReformatCode(pBuffer, span, LanguageService.GetLanguagePreferences().TabSize);
-                foreach (EditSpan editSpan in changeList)
+                if (changeList != null)
                 {
-                    // Add edit operation
-                    mgr.Add(editSpan);
+                    foreach (EditSpan editSpan in changeList)
+                    {
+                        // Add edit operation
+                        mgr.Add(editSpan);
+                    }
+                    // Apply all edits
+                    mgr.ApplyEdits();
                 }
-                // Apply all edits
-                mgr.ApplyEdits();
-                 * */
             }
         }
 
