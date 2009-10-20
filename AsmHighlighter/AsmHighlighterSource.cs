@@ -42,10 +42,18 @@ namespace AsmHighlighter
                         // Add edit operation
                         mgr.Add(editSpan);
                     }
-                    // Apply all edits
-                    mgr.ApplyEdits();
                 }
             }
+        }
+
+        public override CommentInfo GetCommentFormat()
+        {
+            CommentInfo info = new CommentInfo();
+            info.LineStart = ";";
+            info.BlockStart = "";
+            info.BlockEnd = "";
+            info.UseLineComments = true;
+            return info;
         }
 
         public override void ReformatSpan(EditArray mgr, TextSpan span)
@@ -54,7 +62,7 @@ namespace AsmHighlighter
             CompoundAction ca = new CompoundAction(this, description);
             using (ca)
             {
-                ca.FlushEditActions();      // Flush any pending edits
+                // ca.FlushEditActions();      // Flush any pending edits
                 DoFormatting(mgr, span);    // Format the span
             }
         }

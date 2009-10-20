@@ -67,6 +67,7 @@ namespace AsmHighlighter
         //RequestStockColors = false
                              )]
     [ProvideLanguageExtensionAttribute(typeof(AsmHighlighterLanguageService), AsmHighlighterSupportedExtensions.ASM)]
+    [ProvideLanguageExtensionAttribute(typeof(AsmHighlighterLanguageService), AsmHighlighterSupportedExtensions.COD)]
     [ProvideLanguageExtensionAttribute(typeof(AsmHighlighterLanguageService), AsmHighlighterSupportedExtensions.INC)]
     [Guid(GuidList.guidAsmHighlighterPkgString)]
     public sealed class AsmHighlighter : Package, IVsInstalledProduct

@@ -34,8 +34,8 @@ namespace AsmHighlighter
             // MASM Scanner
             masmScanner = new AsmHighlighterScanner(new MAsmHighlighterTokenProvider());
             mapExtensionToScanner.Add(AsmHighlighterSupportedExtensions.ASM,masmScanner);
+            mapExtensionToScanner.Add(AsmHighlighterSupportedExtensions.COD, masmScanner);
             mapExtensionToScanner.Add(AsmHighlighterSupportedExtensions.INC, masmScanner);
-
             //// GLSL Scanner
             //nasmScanner = new AsmHighlighterScanner(new GLSLAsmHighlighterTokenProvider());
         }

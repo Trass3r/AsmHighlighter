@@ -21,6 +21,7 @@ namespace AsmHighlighter
     {
         // ASM file extensions
         public const string ASM = ".asm";
+        public const string COD = ".cod";
         public const string INC = ".inc";
     }
 }
