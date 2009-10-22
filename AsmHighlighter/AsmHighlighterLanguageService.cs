@@ -16,10 +16,9 @@
 //  ------------------------------------------------------------------
 #endregion
 using System;
-using System.Diagnostics;
+using AsmHighlighter.Lexer;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Package;
-using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace AsmHighlighter
@@ -113,8 +112,72 @@ namespace AsmHighlighter
             get { return "ASM Language"; }
         }
 
-        private bool isHelpContextSet = false;
+        /// <summary>
+        /// Validates the breakpoint location.
+        /// </summary>
+        /// <param name="buffer">The buffer.</param>
+        /// <param name="line">The line.</param>
+        /// <param name="col">The col.</param>
+        /// <param name="pCodeSpan">The TextSpans to update.</param>
+        /// <returns></returns>
+        public override int ValidateBreakpointLocation(IVsTextBuffer buffer, int line, int col, TextSpan[] pCodeSpan)
+        {
+            // Return noimpl by default
+            int retval = VSConstants.E_NOTIMPL;
 
+            if (pCodeSpan != null)
+            {
+                // Make sure the span is set to at least the current
+                // position by default.
+                pCodeSpan[0].iStartLine = line;
+                pCodeSpan[0].iStartIndex = col;
+                pCodeSpan[0].iEndLine = line;
+                pCodeSpan[0].iEndIndex = col;
+            }
+            
+            if (buffer != null)
+            {
+                IVsTextLines textLines = buffer as IVsTextLines;
+                if (textLines != null)
+                {
+                    AsmHighlighterScanner scanner = AsmHighlighterScannerFactory.GetScanner(textLines);
+                    Scanner lexer = scanner.Lexer;
+
+                    int maxColumn;
+                    textLines.GetLengthOfLine(line, out maxColumn);
+                    string lineToParse;
+                    textLines.GetLineText(line, 0, line, maxColumn, out lineToParse);
+                    
+                    // Setup token scanner
+                    lexer.SetSource(lineToParse, 0);
+
+                    int state = 0;
+                    int start, end;
+
+                    AsmHighlighterToken token = (AsmHighlighterToken)lexer.GetNext(ref state, out start, out end);
+
+                    // Set Not a valid breakpoint
+                    retval = VSConstants.S_FALSE;
+                    switch (token)
+                    {
+                        case AsmHighlighterToken.INSTRUCTION:
+                        case AsmHighlighterToken.FPUPROCESSOR:
+                        case AsmHighlighterToken.SIMDPROCESSOR:
+                            if (pCodeSpan != null)
+                            {
+                                // Breakpoint covers the whole line (including comment)
+                                pCodeSpan[0].iEndIndex = maxColumn;
+                            }
+                            // Set valid breakpoint
+                            retval = VSConstants.S_OK;
+                            break;
+                    }
+                }
+            }
+            return retval;
+        }
+
+        //private bool isHelpContextSet = false;
         public override void UpdateLanguageContext(LanguageContextHint hint, IVsTextLines buffer, TextSpan[] ptsSelection, Microsoft.VisualStudio.Shell.Interop.IVsUserContext context)
         {
             // WOULD HAVE BEEN NICE TO HAVE HELP, BUT SEEMS TO BE A LONG WAY TO CREATE AN HXS HELP FILE

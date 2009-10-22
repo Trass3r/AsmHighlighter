@@ -63,7 +63,7 @@ namespace AsmHighlighter
                              0,
                              EnableCommenting = true,
                              EnableFormatSelection =  true,
-                             EnableLineNumbers =  true                             
+                             EnableLineNumbers =  true
         //RequestStockColors = false
                              )]
     [ProvideLanguageExtensionAttribute(typeof(AsmHighlighterLanguageService), AsmHighlighterSupportedExtensions.ASM)]
