@@ -46,6 +46,7 @@ namespace AsmHighlighter
     // when you debug your package you want to register it in the experimental hive. This
     // attribute specifies the registry root to use if no one is provided to regpkg.exe with
     // the /root switch.
+    
     [DefaultRegistryRoot("Software\\Microsoft\\VisualStudio\\9.0")]
     // This attribute is used to register the informations needed to show the this package
     // in the Help/About dialog of Visual Studio.
@@ -57,14 +58,15 @@ namespace AsmHighlighter
     // http://msdn.microsoft.com/vstudio/extend/). This attributes tells the shell that this 
     // package has a load key embedded in its resources.
     [ProvideLoadKey("Standard", AsmHighlighterVersion.VERSION, "AsmHighlighter", "Alexandre Mutel", 113)]
-    [ProvideService(typeof(AsmHighlighterLanguageService), ServiceName = "AsmHighlighter Language Service")]
+    [ProvideService(typeof(AsmHighlighterLanguageService), ServiceName = "AsmHighlighter")]
+    // [RegisterExpressionEvaluator(typeof(AsmExpressionEvaluator), GuidList.AsmLanguageGuid, GuidList.MicrosoftVendorGuid)]
     [ProvideLanguageServiceAttribute(typeof(AsmHighlighterLanguageService),
                              "ASM Language",
                              0,
                              EnableCommenting = true,
                              EnableFormatSelection =  true,
-                             EnableLineNumbers =  true
-        //RequestStockColors = false
+                             EnableLineNumbers =  true,
+                             QuickInfo = true
                              )]
     [ProvideLanguageExtensionAttribute(typeof(AsmHighlighterLanguageService), AsmHighlighterSupportedExtensions.ASM)]
     [ProvideLanguageExtensionAttribute(typeof(AsmHighlighterLanguageService), AsmHighlighterSupportedExtensions.COD)]

@@ -16,18 +16,23 @@
 //  ------------------------------------------------------------------
 #endregion
 using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using AsmHighlighter.Lexer;
+using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Package;
 using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace AsmHighlighter
 {
+    [Guid(GuidList.guidAsmHighlighterLanguageServiceString)]
     public class AsmHighlighterLanguageService : LanguageService
     {
         private ColorableItem[] m_colorableItems;
 
         private LanguagePreferences m_preferences;
+        private DTE vs;
 
         public AsmHighlighterLanguageService()
         {
@@ -52,8 +57,20 @@ namespace AsmHighlighter
                                         /* 9 */
                                         new AsmHighlighterColorableItem("ASM Language - SimdInstruction", "ASM Language - SimdInstruction", COLORINDEX.CI_AQUAMARINE, COLORINDEX.CI_USERTEXT_BK, FONTFLAGS.FF_BOLD),
                                    };
+
+            vs = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as DTE;
         }
 
+        public bool IsDebugging()
+        {
+            bool isDebugging = false;
+            Debugger debugger = vs.Debugger;
+            if (debugger != null)
+            {
+                isDebugging = debugger.CurrentMode != dbgDebugMode.dbgDesignMode;
+            }
+            return isDebugging;
+        }
 
         public override int GetItemCount(out int count)
         {
@@ -99,7 +116,9 @@ namespace AsmHighlighter
         public override AuthoringScope ParseSource(ParseRequest req)
         {
             // req.FileName
-            return new TestAuthoringScope();
+
+            AsmHighlighterSource source = (AsmHighlighterSource)GetSource(req.View);
+            return new TestAuthoringScope(this, source);
         }
 
         public override string GetFormatFilterList()
@@ -124,6 +143,8 @@ namespace AsmHighlighter
         {
             // Return noimpl by default
             int retval = VSConstants.E_NOTIMPL;
+
+            TextSpan span;
 
             if (pCodeSpan != null)
             {
@@ -166,7 +187,7 @@ namespace AsmHighlighter
                             if (pCodeSpan != null)
                             {
                                 // Breakpoint covers the whole line (including comment)
-                                pCodeSpan[0].iEndIndex = maxColumn;
+                                span.iEndIndex = maxColumn;
                             }
                             // Set valid breakpoint
                             retval = VSConstants.S_OK;
@@ -192,13 +213,122 @@ namespace AsmHighlighter
             //    isHelpContextSet = true;
             //}
         }
-        
+
+        public int ComputeDataTipOnContext(IVsTextLines textLines, int line, int col, ref TextSpan span, out string tipText)
+        {
+            int result = VSConstants.E_NOTIMPL;
+
+            tipText = "";
+            span.iStartLine = line;
+            span.iStartIndex = col;
+            span.iEndLine = line;
+            span.iEndIndex = col;
+
+            if (textLines != null)
+            {
+                // Parse tokens and search for the token below the selection
+                AsmHighlighterScanner scanner = AsmHighlighterScannerFactory.GetScanner(textLines);
+                string lineOfCode;
+                List<TokenInfo> tokenInfoList = scanner.ParseLine(textLines, line, int.MaxValue, out lineOfCode);
+
+                TokenInfo selectedTokenInfo = null;
+                foreach (TokenInfo info in tokenInfoList)
+                {
+                    if (col >= info.StartIndex && col <= info.EndIndex)
+                    {
+                        selectedTokenInfo = info;
+                        break;
+                    }
+                }
+
+                // If a valid token was found, handle it
+                if (selectedTokenInfo != null)
+                {
+                    AsmHighlighterToken token = (AsmHighlighterToken)selectedTokenInfo.Token;
+
+                    // Display only tip for REGISTER or IDENTIFIER
+                    if ((token & AsmHighlighterToken.IS_REGISTER) != 0 || (token & AsmHighlighterToken.IS_NUMBER) != 0 || token == AsmHighlighterToken.IDENTIFIER)
+                    {
+                        result = VSConstants.S_OK;
+
+                        tipText = lineOfCode.Substring(selectedTokenInfo.StartIndex,
+                                                         selectedTokenInfo.EndIndex - selectedTokenInfo.StartIndex + 1);
+
+                        if ((token & AsmHighlighterToken.IS_REGISTER)!=0)
+                        {
+                            tipText = tipText.ToLower();
+                            if (token == AsmHighlighterToken.REGISTER_FPU)
+                            {
+                                tipText = tipText.Replace("(", "");
+                                tipText = tipText.Replace(")", "");
+                            }
+                        }
+
+                        span.iStartIndex = selectedTokenInfo.StartIndex;
+                        span.iEndIndex = selectedTokenInfo.EndIndex + 1;
+
+                        // If in debugging mode, display the value
+                        // (This is a workaround instead of going through the Debugger.ExpressionEvaluator long way...)
+                        // TODO: ExpressionEvaluator is not working, this is a workaround to display values
+                        if (IsDebugging() && (((token & AsmHighlighterToken.IS_REGISTER) != 0) || token == AsmHighlighterToken.IDENTIFIER))
+                        {
+
+                            Expression expression = vs.Debugger.GetExpression(tipText, true, 1000);
+                            string valueStr = "";
+
+                            // Make a friendly printable version for float/double and numbers
+                            try
+                            {
+                                if (expression.Type.Contains("double"))
+                                {
+                                    double value = double.Parse(expression.Value);
+                                    valueStr = string.Format("{0:r}", value);
+                                }
+                                else
+                                {
+                                    long value = long.Parse(expression.Value);
+                                    valueStr = string.Format("0x{0:X8}", value);
+                                }
+                            }
+                            catch
+                            {
+                            }
+
+                            // Print a printable version only if it's valid
+                            if (string.IsNullOrEmpty(valueStr))
+                            {
+                                tipText = string.Format("{0} = {1}", tipText, expression.Value);
+                            }
+                            else
+                            {
+                                tipText = string.Format("{0} = {1} = {2}", tipText, valueStr, expression.Value);
+                            }
+
+                        }
+                    }
+                }
+            }
+            return result;
+        }
+
         internal class TestAuthoringScope : AuthoringScope
         {
+            private AsmHighlighterSource source;
+            private AsmHighlighterLanguageService langService;
+
+            public TestAuthoringScope(AsmHighlighterLanguageService langServiceArg, AsmHighlighterSource sourceArg)
+            {
+                source = sourceArg;
+                langService = langServiceArg;
+            }
             public override string GetDataTipText(int line, int col, out TextSpan span)
             {
+                IVsTextLines textLines = source.GetTextLines();
+                string tipText = "";
+
                 span = new TextSpan();
-                return null;
+                langService.ComputeDataTipOnContext(textLines, line, col, ref span, out tipText);
+                return tipText;
             }
 
             public override Declarations GetDeclarations(IVsTextView view,
@@ -222,5 +352,39 @@ namespace AsmHighlighter
             }
         }
 
+        #region Implementation of IVsLanguageTextOps
+
+        /// <summary>
+        /// Displays a tip over a span of text when the mouse hovers over this location.
+        /// </summary>
+        /// <param name="pTextLayer">[in] An <see cref="T:Microsoft.VisualStudio.TextManager.Interop.IVsTextLayer"/> object representing the text file.</param>
+        /// <param name="ptsSel">[in] Span of text relevant to the specified text layer. For more information, see <see cref="T:Microsoft.VisualStudio.TextManager.Interop.TextSpan"/>.</param>
+        /// <param name="ptsTip">[out] Returns a span of text to center the tip over. For more information, see <see cref="N:Microsoft.VisualStudio.TextManager.Interop"/>.</param>
+        /// <param name="pbstrText">[out] Returns the text of the tip to display.</param>
+        /// <returns>
+        /// If the method succeeds, it returns <see cref="F:Microsoft.VisualStudio.VSConstants.S_OK"/>. If it fails, it returns an error code.
+        /// </returns>
+        public int GetDataTip(IVsTextLayer pTextLayer, TextSpan[] ptsSel, TextSpan[] ptsTip, out string pbstrText)
+        {
+            pbstrText = "";
+            return VSConstants.E_NOTIMPL;
+        }
+
+        public int GetPairExtent(IVsTextLayer pTextLayer, TextAddress ta, TextSpan[] pts)
+        {
+            return VSConstants.E_NOTIMPL;
+        }
+
+        public int GetWordExtent(IVsTextLayer pTextLayer, TextAddress ta, WORDEXTFLAGS flags, TextSpan[] pts)
+        {
+            return VSConstants.E_NOTIMPL;
+        }
+
+        public int Format(IVsTextLayer pTextLayer, TextSpan[] ptsSel)
+        {
+            return VSConstants.E_NOTIMPL;
+        }
+
+        #endregion
     }
 }

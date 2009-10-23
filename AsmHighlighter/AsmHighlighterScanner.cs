@@ -15,8 +15,11 @@
 // 
 //  ------------------------------------------------------------------
 #endregion
+
+using System.Collections.Generic;
 using AsmHighlighter.Lexer;
 using Microsoft.VisualStudio.Package;
+using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace AsmHighlighter
 {
@@ -43,9 +46,36 @@ namespace AsmHighlighter
             }
         }
 
+        public List<TokenInfo> Parse(string toParse, int maxTokens)
+        {
+            lex.SetSource(toParse, 0);
+            int state = 0;
+            int start, end;
+            List<TokenInfo> tokenInfos = new List<TokenInfo>();
+            AsmHighlighterToken token = (AsmHighlighterToken)lex.GetNext(ref state, out start, out end);
+            while (token != AsmHighlighterToken.EOF && --maxTokens >=0 )
+            {
+                TokenInfo tokenInfo = new TokenInfo();
+                tokenInfo.StartIndex = start;
+                tokenInfo.EndIndex = end;
+                tokenInfo.Token = (int)token;                
+                tokenInfos.Add(tokenInfo);
+                token = (AsmHighlighterToken)lex.GetNext(ref state, out start, out end);
+            }
+            return tokenInfos;
+        }
+
+        public List<TokenInfo> ParseLine(IVsTextLines textLines, int line, int maxTokens, out string lineOut)
+        {
+            int maxColumn;
+            textLines.GetLengthOfLine(line, out maxColumn);
+            textLines.GetLineText(line, 0, line, maxColumn, out lineOut);
+
+            return Parse(lineOut, maxTokens);
+        }
+
         public bool ScanTokenAndProvideInfoAboutIt(TokenInfo tokenInfo, ref int state)
         {
-
             int start, end;
             AsmHighlighterToken token = (AsmHighlighterToken)lex.GetNext(ref state, out start, out end);
 
@@ -75,6 +105,8 @@ namespace AsmHighlighter
                         tokenInfo.Type = TokenType.String;
                         break;
                     case AsmHighlighterToken.REGISTER:
+                    case AsmHighlighterToken.REGISTER_FPU:
+                    case AsmHighlighterToken.REGISTER_MMXSSE:
                         // hugly. TODO generate a AsmHighlighterTokenColor to keep tracks of 6-7-8 TokenColors
                         tokenInfo.Color = (TokenColor)6;
                         tokenInfo.Type = TokenType.Identifier;

@@ -12,7 +12,7 @@ PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
   Visual Studio Integration for IronPython
   Console tool window, language service, project type, and MSBuild support for IronPython
 -->
-<Wix xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 
   <?include $(var.VariablesFile)?>
   
@@ -25,8 +25,8 @@ PURPOSE, MERCHANTABILITY, OR NON-INFRINGEMENT.
       <Directory Id="SystemFolder" Name="System32" />
 
       <Component Id="Comp_LanguageService" DiskId="1" Guid="$(var.Comp_LanguageService_Guid)">
-        <File Id="File_AsmHighlighter.dll" Name="ASMHIGHL.DLL" LongName="AsmHighlighter.dll" Source="$(var.IntegrationBinPath)\" />
-        <File Id="File_fasmdll_managed.dll" Name="FASMMANA.DLL" LongName="fasmdll_managed.dll" Source="$(var.IntegrationBinPath)\" />
+        <File Id="File_AsmHighlighter.dll" Name="AsmHighlighter.dll" Source="$(var.IntegrationBinPath)\" />
+        <File Id="File_fasmdll_managed.dll" Name="fasmdll_managed.dll" Source="$(var.IntegrationBinPath)\" />
         <?include AsmHighlighter.wxi ?>
       </Component>
     </DirectoryRef>

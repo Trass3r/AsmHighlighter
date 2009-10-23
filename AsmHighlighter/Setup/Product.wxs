@@ -6,19 +6,18 @@
 
 <?define ProductShortName = "AsmHighlighter" ?>
 <?define ProductDescription = "AsmHighlighter is an extension to Visual Studio 2008 that provides syntax highlighting for x86 ASM language." ?>
-<?define ProductVersion = "1.2.0" ?>
-<?define ProductVersionText = "1.2" ?>
+<?define ProductVersion = "1.3.0" ?>
+<?define ProductVersionText = "1.3" ?>
 <?define Manufacturer = "Alexandre Mutel" ?>
 <?define UpgradeCode = "B9DB0D8D-86C9-4f73-91A1-EA768D125128" ?>
-<?define ProductCode = "C8371B02-6296-4c12-800F-A5E97128E255" ?>
-<?define PackageCode = "EF1A3C3F-134F-4491-88F9-0B7F42CCBC32" ?>
+<?define ProductCode = "A403DF97-BB2F-42a9-84EE-906804CFA1ED" ?>
 
-<Wix xmlns="http://schemas.microsoft.com/wix/2003/01/wi">
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
 
   <?include $(var.VariablesFile)?>
 
   <Product Id="$(var.ProductCode)" UpgradeCode="$(var.UpgradeCode)" Name="$(var.ProductShortName) $(var.ProductVersionText)" Version="$(var.ProductVersion)" Language="$(var.ProductLanguage)" Manufacturer="$(var.Manufacturer)">
-    <Package Id="$(var.PackageCode)" Compressed="yes" Description="$(var.ProductDescription). $(var.ProductShortName) $(var.ProductVersionText) ($(var.ProductVersion))" InstallerVersion="200" ShortNames="no" Manufacturer="$(var.Manufacturer)" Platforms="Intel" />
+    <Package Compressed="yes" Description="$(var.ProductDescription). $(var.ProductShortName) $(var.ProductVersionText) ($(var.ProductVersion))" InstallerVersion="200" ShortNames="no" Manufacturer="$(var.Manufacturer)"/>
     <Media Id="1" Cabinet="AsmHighlighter.cab" EmbedCab="yes" />
 
     <!-- Major upgrade -->
@@ -30,31 +29,26 @@
     <!-- Specify Icon for Add and Remove programs -->
     <Icon Id='AsmHighlighter.dll.exe' SourceFile='Bitmaps\PackageIcon16x16.ico'/>
 
+    <PropertyRef Id="VS90DEVENV" />
+    <PropertyRef Id="VS90_ROOT_FOLDER" />
+    <CustomActionRef Id="VS90Setup" /> 
+
     <!-- Properties -->
     <Property Id="ARPPRODUCTICON" Value="AsmHighlighter.dll.exe" />
     <Property Id="ALLUSERS" Value="1" />
-    <Property Id="ARPHELPLINK" Value="http://msdn.microsoft.com/vstudio/extend/" />
-    <Property Id="ARPURLINFOABOUT" Value="http://msdn.microsoft.com/" />
-    <Property Id="ARPURLUPDATEINFO" Value="http://msdn.microsoft.com/vstudio/extend/" />
-    <Property Id="DEVENV_DIR">
-      <RegistrySearch Id="RegSearch_Devenv_Directory" Root="HKLM" Key="$(var.VisualStudioRegistryRoot)\Setup\VS" Name="EnvironmentDirectory" Type="raw" />
-    </Property>
-    <Property Id="VS_DIR">
-      <RegistrySearch Id="RegSearch_VsInstall_Path" Root="HKLM" Key="$(var.VisualStudioRegistryRoot)\Setup\VS" Name="ProductDir" Type="raw" />
-    </Property>
-    <Property Id="DEVENV_EXE_PATH">
-      <RegistrySearch Id="RegSearch_DevenvExe_Path" Root="HKLM" Key="$(var.VisualStudioRegistryRoot)\Setup\VS" Name="EnvironmentPath" Type="raw" />
-    </Property>
+    <Property Id="ARPHELPLINK" Value="http://asmhighlighter.codeplex.com" />
+    <Property Id="ARPURLINFOABOUT" Value="http://asmhighlighter.codeplex.com" />
+    <Property Id="ARPURLUPDATEINFO" Value="http://asmhighlighter.codeplex.com" />
 
     <!-- Launch conditions -->
     <Condition Message="An administrator must approve or install [ProductName]."> Privileged </Condition>
     <Condition Message="A later version of [ProductName] is already installed."> NOT NEWERVERSIONDETECTED </Condition>
-    <Condition Message="[ProductName] requires Visual Studio 2008. ([DEVENV_EXE_PATH])"> DEVENV_EXE_PATH </Condition>
+    <Condition Message="[ProductName] requires Visual Studio 2008. ([VS90DEVENV])"> VS90DEVENV </Condition>
 
     <!-- Root directories -->
     <Directory Id="TARGETDIR" Name="SourceDir">
       <Directory Id="ProgramFilesFolder" Name="PFILES">
-        <Directory Id="INSTALLDIR" Name="AsmHL" LongName="Visual Studio Integration for AsmHighlighter">
+        <Directory Id="INSTALLDIR" Name="Visual Studio Integration for AsmHighlighter">
         </Directory>
       </Directory>
     </Directory>
@@ -64,28 +58,35 @@
       <ComponentGroupRef Id="CompGroup_Integration" />
     </Feature>
 
-    <!-- Custom actions -->
-    <CustomAction Id="CA_DevenvSetup" Property="DEVENV_EXE_PATH" ExeCommand="/setup"  Impersonate="no" Execute="deferred" />
+    <!-- Prevent downgrading -->
+
+    <CustomAction Id="PreventDowngrading" Error="Newer version already installed." />
+
+    <CustomAction Id="CA_BlockIfVSIsNotInstalled" Error="[ProductName] requires Visual Studio 2008. ([DEVENV_EXE_PATH])" /> 
 
     <!-- UI ProgressText -->
     <UI>
-        <ProgressText Action="CA_DevenvSetup">Registering AsmHighlighter to Visual Studio 2008... (this may take a few minutes)</ProgressText>
+        <ProgressText Action="VS90Setup" Template="[1]">Registering [ProductName] to Visual Studio 2008... (this may take a few minutes)</ProgressText>         
     </UI> 
 
     <!-- Sequences -->
     <InstallExecuteSequence>
+      <Custom Action="CA_BlockIfVSIsNotInstalled" Before="CostInitialize">(NOT VS90_ROOT_FOLDER OR NOT VS90DEVENV) AND NOT Installed</Custom>       
+      <Custom Action="PreventDowngrading" After="FindRelatedProducts">NEWERVERSIONDETECTED</Custom>
       <RemoveExistingProducts After="InstallValidate" />
       <!-- Runs during both install and uninstall -->
-      <Custom Action="CA_DevenvSetup" Before="InstallFinalize" />
+      <Custom Action="VS90Setup" Before="InstallFinalize" />
     </InstallExecuteSequence>
 
     <InstallUISequence>
-      <!-- Because we have a launch condition that uses the results of FindRelatedProducts, put it first. -->
-      <LaunchConditions After="FindRelatedProducts" />
+      <Custom Action="CA_BlockIfVSIsNotInstalled" Before="CostInitialize">(NOT VS90_ROOT_FOLDER OR NOT VS90DEVENV) AND NOT Installed</Custom>
     </InstallUISequence>
 
     <!-- User interface -->
     <UIRef Id="WixUI_Minimal" />
     <UIRef Id="WixUI_ErrorProgressText" />    
+    <WixVariable Id="WixUIDialogBmp" Value="Bitmaps\dialog.bmp" />
+    <WixVariable Id="WixUIBannerBmp" Value="Bitmaps\banner.bmp" />
+    <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />        
   </Product>
 </Wix>

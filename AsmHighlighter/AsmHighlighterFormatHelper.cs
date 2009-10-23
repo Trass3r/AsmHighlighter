@@ -183,12 +183,14 @@ namespace AsmHighlighter
                         countRegisterInBracket = 0;
                         break;
                     case AsmHighlighterToken.REGISTER:
+                    case AsmHighlighterToken.REGISTER_FPU:
+                    case AsmHighlighterToken.REGISTER_MMXSSE:
                         if (isInBracket)
                         {
                             countRegisterInBracket++;
                         }
                         // Convert st(#) register to st#
-                        if (tokenStr.StartsWith("st(") )
+                        if (token == AsmHighlighterToken.REGISTER_FPU)
                         {
                             tokenStr = tokenStr.Replace("(", "");
                             tokenStr = tokenStr.Replace(")", "");
@@ -210,7 +212,7 @@ namespace AsmHighlighter
                         stripReplace  = (defines.ContainsKey(tokenStr)) ? defines[tokenStr] : "4";
                         if (isInBracket)
                         {
-                            if ( lexer.AsmHighlighterTokenProvider.GetTokenFromIdentifier(stripReplace) == AsmHighlighterToken.REGISTER )
+                            if ( (lexer.AsmHighlighterTokenProvider.GetTokenFromIdentifier(stripReplace) & AsmHighlighterToken.IS_REGISTER) != 0 )
                             {
                                 countRegisterInBracket++;
                             }

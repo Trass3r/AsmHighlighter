@@ -15,27 +15,37 @@
 // 
 //  ------------------------------------------------------------------
 #endregion
+
+using System;
+
 namespace AsmHighlighter.Lexer
 {
-    public enum AsmHighlighterToken
+    [Flags]
+    public enum AsmHighlighterToken : uint
     {
-        EOF,
-        UNDEFINED,
-        IDENTIFIER,
-        INSTRUCTION,
-        DIRECTIVE,
-        FPUPROCESSOR,
-        SIMDPROCESSOR,
-        REGISTER,
-        COMMENT_LINE,
-        NUMBER,
-        FLOAT,
-        STRING_LITERAL,
-        OPERATOR,
-        DELIMITER,
-        LEFT_PARENTHESIS, 
-        RIGHT_PARENTHESIS, 
-        LEFT_SQUARE_BRACKET, 
-        RIGHT_SQUARE_BRACKET
+        EOF = 0,
+        UNDEFINED = 1,
+        IDENTIFIER = 2,
+        INSTRUCTION = 3 | IS_INSTRUCTION,
+        DIRECTIVE = 4,
+        FPUPROCESSOR = 5 | IS_INSTRUCTION,
+        SIMDPROCESSOR = 6 | IS_INSTRUCTION,
+        REGISTER = 7 | IS_REGISTER,
+        REGISTER_FPU = 8 | IS_REGISTER,
+        REGISTER_MMXSSE = 9 | IS_REGISTER,
+        COMMENT_LINE = 10,
+        NUMBER = 11 | IS_NUMBER,
+        FLOAT = 12 | IS_NUMBER,
+        STRING_LITERAL = 13,
+        OPERATOR = 14,
+        DELIMITER = 15,
+        LEFT_PARENTHESIS = 16, 
+        RIGHT_PARENTHESIS = 17, 
+        LEFT_SQUARE_BRACKET = 18, 
+        RIGHT_SQUARE_BRACKET = 19,
+
+        IS_REGISTER = 0x80000000,
+        IS_INSTRUCTION = 0x40000000,
+        IS_NUMBER = 0x20000000,
     }
 }

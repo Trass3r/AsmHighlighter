@@ -14,8 +14,7 @@ using AsmHighlighter;
 [assembly: AssemblyProduct("AsmHighlighter")]
 [assembly: AssemblyCopyright("Copyright 2009 - Alexandre Mutel")]
 [assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]   
-[assembly: ComVisible(false)]     
+[assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(false)]
 [assembly: NeutralResourcesLanguage("en-US")]
 
@@ -32,5 +31,5 @@ using AsmHighlighter;
 [assembly: AssemblyVersion(AsmHighlighterVersion.ASSEMBLY_VERSION)]
 [assembly: AssemblyFileVersion(AsmHighlighterVersion.ASSEMBLY_FILE_VERSION)]
 
-
-
+[assembly: GuidAttribute("BB9529EE-0432-45e5-9131-1665499081A4")]
+[assembly: ComVisibleAttribute(false)]

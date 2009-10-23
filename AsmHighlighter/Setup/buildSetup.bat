@@ -16,13 +16,15 @@ del %~dp0\..\..\AsmHighlighter.sln.cache
 
 MSBuild %~dp0\..\..\AsmHighlighter.sln /p:Configuration=Release /p:RegisterOutputPackage=false
 
-set WIXDIR=%VSSDK90INSTALL%\VisualStudioIntegration\Tools\Wix
+:: set WIXDIR=%VSSDK90INSTALL%\VisualStudioIntegration\Tools\Wix
+set WIXDIR=C:\Program Files\Windows Installer XML v3\bin
 set ObjDir=%~dp0Obj
 set VariablesFile=%~dp0Variables.wxi
 
 if not exist "%ObjDir%" mkdir "%ObjDir%"
+del "%ObjDir%\*.*"
 
 "%WIXDIR%\candle.exe" -dVariablesFile="%VariablesFile%" -dProductLanguage=1033 -out "%ObjDir%\\" Integration.wxs Product.wxs
-"%WIXDIR%\light.exe" "%ObjDir%\Integration.wixobj" "%ObjDir%\Product.wixobj" "%WIXDIR%\wixui.wixlib" -out AsmHighlighter.msi -loc "%WIXDIR%\WixUI_en-us.wxl"
+"%WIXDIR%\light.exe" -ext WixVSExtension.dll -ext WixUIExtension -cultures:en-us "%ObjDir%\Integration.wixobj" "%ObjDir%\Product.wixobj" -out AsmHighlighter.msi
 
 pause
