@@ -1,0 +1,35 @@
+Windows Registry Editor Version 5.00
+
+[$RootKey$\InstalledProducts\AsmHighlighter]
+"Package"="{e767ef4d-28fe-4f99-aa6d-4107399d0837}"
+"UseInterface"=dword:00000001
+[$RootKey$\Packages\{e767ef4d-28fe-4f99-aa6d-4107399d0837}]
+@="AsmHighlighter.AsmHighlighter, AsmHighlighter, Version=1.4.0.0, Culture=neutral, PublicKeyToken=null"
+"InprocServer32"="%windir%\\SYSTEM32\\MSCOREE.DLL"
+"CodeBase"="%localappdata%\\Microsoft\\VisualStudio\\10.0\\Extensions\\Alexandre Mutel\\AsmHighlighter\\1.4\\AsmHighlighter.dll"
+"Class"="AsmHighlighter.AsmHighlighter"
+"Assembly"="AsmHighlighter, Version=1.4.0.0, Culture=neutral, PublicKeyToken=null"
+[$RootKey$\Languages\File Extensions\.asm]
+@="{44c6cef2-a3cd-37b5-8120-1b241659eac7}"
+[$RootKey$\Languages\File Extensions\.cod]
+@="{44c6cef2-a3cd-37b5-8120-1b241659eac7}"
+[$RootKey$\Languages\File Extensions\.inc]
+@="{44c6cef2-a3cd-37b5-8120-1b241659eac7}"
+[$RootKey$\Languages\Language Services\ASM Language]
+@="{44c6cef2-a3cd-37b5-8120-1b241659eac7}"
+"Package"="{e767ef4d-28fe-4f99-aa6d-4107399d0837}"
+"LangResID"=dword:00000000
+"QuickInfo"=dword:00000001
+"EnableLineNumbersOption"=dword:00000001
+"EnableCommenting"=dword:00000001
+"EnableFormatSelection"=dword:00000001
+[$RootKey$\Packages\{e767ef4d-28fe-4f99-aa6d-4107399d0837}]
+"ID"=dword:00000071
+"MinEdition"="Standard"
+"ProductVersion"="1.4"
+"ProductName"="AsmHighlighter"
+"CompanyName"="Alexandre Mutel"
+[$RootKey$\Services\{44c6cef2-a3cd-37b5-8120-1b241659eac7}]
+@="{e767ef4d-28fe-4f99-aa6d-4107399d0837}"
+"Name"="AsmHighlighter"
+

@@ -144,14 +144,12 @@ namespace AsmHighlighter
             // Return noimpl by default
             int retval = VSConstants.E_NOTIMPL;
 
-            TextSpan span;
-
             if (pCodeSpan != null)
             {
                 // Make sure the span is set to at least the current
                 // position by default.
                 pCodeSpan[0].iStartLine = line;
-                pCodeSpan[0].iStartIndex = col;
+                pCodeSpan[0].iStartIndex = 0;
                 pCodeSpan[0].iEndLine = line;
                 pCodeSpan[0].iEndIndex = col;
             }
@@ -187,7 +185,7 @@ namespace AsmHighlighter
                             if (pCodeSpan != null)
                             {
                                 // Breakpoint covers the whole line (including comment)
-                                span.iEndIndex = maxColumn;
+                                pCodeSpan[0].iEndIndex = maxColumn;
                             }
                             // Set valid breakpoint
                             retval = VSConstants.S_OK;

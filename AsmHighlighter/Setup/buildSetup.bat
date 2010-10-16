@@ -8,7 +8,7 @@
 :: Build the binaries then build the WiX sources that install them
 
 setlocal
-call "C:\Program Files\Microsoft Visual Studio 9.0\VC\vcvarsall.bat" x86
+call "C:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\vcvarsall.bat" x86
 echo on
 
 :: Strange bug. Need to remove sln cache before calling MSBuild (working directory issue?)
@@ -17,7 +17,7 @@ del %~dp0\..\..\AsmHighlighter.sln.cache
 MSBuild %~dp0\..\..\AsmHighlighter.sln /p:Configuration=Release /p:RegisterOutputPackage=false
 
 :: set WIXDIR=%VSSDK90INSTALL%\VisualStudioIntegration\Tools\Wix
-set WIXDIR=C:\Program Files\Windows Installer XML v3\bin
+set WIXDIR=C:\Program Files (x86)\Windows Installer XML v3\bin
 set ObjDir=%~dp0Obj
 set VariablesFile=%~dp0Variables.wxi
 

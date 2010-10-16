@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Reflection;
+#if VISUAL_STUDIO_2010
 using System.Resources;
+#endif
 using System.Runtime.InteropServices;
 using AsmHighlighter;
 
@@ -8,11 +10,11 @@ using AsmHighlighter;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("AsmHighlighter")]
-[assembly: AssemblyDescription("AsmHighlighter is an extension to Visual Studio 2008 that provides syntax highlighting for x86 ASM language.")]
+[assembly: AssemblyDescription("AsmHighlighter is an extension to Visual Studio 2008/2010 that provides syntax highlighting for x86 ASM language.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Alexandre Mutel")]
 [assembly: AssemblyProduct("AsmHighlighter")]
-[assembly: AssemblyCopyright("Copyright 2009 - Alexandre Mutel")]
+[assembly: AssemblyCopyright("Copyright 2009-2011 - Alexandre Mutel")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 [assembly: CLSCompliant(false)]
