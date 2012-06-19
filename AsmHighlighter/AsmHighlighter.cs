@@ -50,7 +50,7 @@ namespace AsmHighlighter
 
 
 #if VISUAL_STUDIO_2010
-    [DefaultRegistryRoot("Software\\Microsoft\\VisualStudio\\10.0")]
+    [DefaultRegistryRoot("Software\\Microsoft\\VisualStudio\\11.0")]
 #else
     [DefaultRegistryRoot("Software\\Microsoft\\VisualStudio\\9.0")]
 #endif
@@ -73,6 +73,7 @@ namespace AsmHighlighter
     [ProvideLanguageServiceAttribute(typeof(AsmHighlighterLanguageService),
                              "ASM Language",
                              0,
+                             RequestStockColors = false,
                              EnableCommenting = true,
                              EnableFormatSelection =  true,
                              EnableLineNumbers =  true,
