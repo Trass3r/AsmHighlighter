@@ -57,10 +57,10 @@ namespace AsmHighlighter
     // package has a load key embedded in its resources.
     [ProvideService(typeof(AsmHighlighterLanguageService), ServiceName = "AsmHighlighter")]
     // [RegisterExpressionEvaluator(typeof(AsmExpressionEvaluator), GuidList.AsmLanguageGuid, GuidList.MicrosoftVendorGuid)]
-    [ProvideLanguageServiceAttribute(typeof(AsmHighlighterLanguageService),
+    [ProvideLanguageService(typeof(AsmHighlighterLanguageService),
                              "ASM Language",
                              0,
-                             RequestStockColors = false,
+                             RequestStockColors = true,
                              EnableCommenting = true,
                              EnableFormatSelection =  true,
                              EnableLineNumbers =  true,

@@ -71,7 +71,7 @@ namespace AsmHighlighter
             }
             return isDebugging;
         }
-
+/*
         public override int GetItemCount(out int count)
         {
             count = m_colorableItems.Length;
@@ -88,7 +88,7 @@ namespace AsmHighlighter
             item = m_colorableItems[index-1];
             return VSConstants.S_OK;
         }
-
+*/
         public override LanguagePreferences GetLanguagePreferences()
         {
             if (m_preferences == null)
