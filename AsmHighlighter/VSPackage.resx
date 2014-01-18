@@ -121,7 +121,7 @@
     <value>AsmHighlighter</value>
   </data>
   <data name="112" xml:space="preserve">
-    <value>AsmHighlighter is an extension to Visual Studio 2012+ that provides syntax highlighting for x86 ASM language.</value>
+    <value>AsmHighlighter is an extension to Visual Studio 2013+ that provides syntax highlighting for x86 ASM language.</value>
   </data>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="400" type="System.Resources.ResXFileRef, System.Windows.Forms">

@@ -4,7 +4,7 @@ Windows Registry Editor Version 5.00
 "Package"="{e767ef4d-28fe-4f99-aa6d-4107399d0837}"
 "UseInterface"=dword:00000001
 [$RootKey$\Packages\{e767ef4d-28fe-4f99-aa6d-4107399d0837}]
-@="AsmHighlighter.AsmHighlighter, AsmHighlighter, Version=1.6.0.0, Culture=neutral, PublicKeyToken=null"
+@="AsmHighlighter.AsmHighlighter, AsmHighlighter, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null"
 "InprocServer32"="$WinDir$\SYSTEM32\MSCOREE.DLL"
 "CodeBase"="$PackageFolder$\AsmHighlighter.dll"
 "Class"="AsmHighlighter.AsmHighlighter"
@@ -25,7 +25,7 @@ Windows Registry Editor Version 5.00
 [$RootKey$\Packages\{e767ef4d-28fe-4f99-aa6d-4107399d0837}]
 "ID"=dword:00000071
 "MinEdition"="Standard"
-"ProductVersion"="1.6"
+"ProductVersion"="2.0"
 "ProductName"="AsmHighlighter"
 "CompanyName"="Alexandre Mutel"
 [$RootKey$\Services\{44c6cef2-a3cd-37b5-8120-1b241659eac7}]

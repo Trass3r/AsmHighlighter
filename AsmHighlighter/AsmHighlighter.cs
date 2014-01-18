@@ -48,7 +48,7 @@ namespace AsmHighlighter
     // the /root switch.
 
 
-    [DefaultRegistryRoot("Software\\Microsoft\\VisualStudio\\11.0")]
+    [DefaultRegistryRoot("Software\\Microsoft\\VisualStudio\\12.0")]
 
     //[InstalledProductRegistration(true, null, null, null)]
     // In order be loaded inside Visual Studio in a machine that has not the VS SDK installed, 

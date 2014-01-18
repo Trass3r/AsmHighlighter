@@ -8,7 +8,7 @@ using AsmHighlighter;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("AsmHighlighter")]
-[assembly: AssemblyDescription("AsmHighlighter is an extension to Visual Studio 2008/2010/2012 that provides syntax highlighting for x86 ASM language.")]
+[assembly: AssemblyDescription("AsmHighlighter is an extension to Visual Studio 2013+ that provides syntax highlighting for x86 ASM language.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Alexandre Mutel")]
 [assembly: AssemblyProduct("AsmHighlighter")]
