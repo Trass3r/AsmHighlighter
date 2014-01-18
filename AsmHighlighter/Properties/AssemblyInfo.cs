@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Reflection;
-#if VISUAL_STUDIO_2010
 using System.Resources;
-#endif
 using System.Runtime.InteropServices;
 using AsmHighlighter;
 

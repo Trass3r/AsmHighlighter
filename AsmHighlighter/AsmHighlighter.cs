@@ -48,26 +48,13 @@ namespace AsmHighlighter
     // the /root switch.
 
 
-
-#if VISUAL_STUDIO_2010
     [DefaultRegistryRoot("Software\\Microsoft\\VisualStudio\\11.0")]
-#else
-    [DefaultRegistryRoot("Software\\Microsoft\\VisualStudio\\9.0")]
-#endif
-#if !VISUAL_STUDIO_2010
-    // This attribute is used to register the informations needed to show the this package
-    // in the Help/About dialog of Visual Studio.
-    // Loaded from Package IVsInstalledProduct methods
-    [InstalledProductRegistration(true, "#110", "#112", AsmHighlighterVersion.VERSION, IconResourceID = 400)]
-#endif
+
     //[InstalledProductRegistration(true, null, null, null)]
     // In order be loaded inside Visual Studio in a machine that has not the VS SDK installed, 
     // package needs to have a valid load key (it can be requested at 
     // http://msdn.microsoft.com/vstudio/extend/). This attributes tells the shell that this 
     // package has a load key embedded in its resources.
-#if !VISUAL_STUDIO_2010
-    [ProvideLoadKey("Standard", AsmHighlighterVersion.VERSION, "AsmHighlighter", "Alexandre Mutel", 113)]
-#endif
     [ProvideService(typeof(AsmHighlighterLanguageService), ServiceName = "AsmHighlighter")]
     // [RegisterExpressionEvaluator(typeof(AsmExpressionEvaluator), GuidList.AsmLanguageGuid, GuidList.MicrosoftVendorGuid)]
     [ProvideLanguageServiceAttribute(typeof(AsmHighlighterLanguageService),
