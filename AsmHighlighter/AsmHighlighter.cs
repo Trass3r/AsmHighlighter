@@ -66,9 +66,9 @@ namespace AsmHighlighter
                              EnableLineNumbers =  true,
                              QuickInfo = true
                              )]
-    [ProvideLanguageExtensionAttribute(typeof(AsmHighlighterLanguageService), AsmHighlighterSupportedExtensions.ASM)]
-    [ProvideLanguageExtensionAttribute(typeof(AsmHighlighterLanguageService), AsmHighlighterSupportedExtensions.COD)]
-    [ProvideLanguageExtensionAttribute(typeof(AsmHighlighterLanguageService), AsmHighlighterSupportedExtensions.INC)]
+    [ProvideLanguageExtension(typeof(AsmHighlighterLanguageService), AsmHighlighterSupportedExtensions.ASM)]
+    [ProvideLanguageExtension(typeof(AsmHighlighterLanguageService), AsmHighlighterSupportedExtensions.COD)]
+    [ProvideLanguageExtension(typeof(AsmHighlighterLanguageService), AsmHighlighterSupportedExtensions.INC)]
     [Guid(GuidList.guidAsmHighlighterPkgString)]
     public sealed class AsmHighlighter : Package, IVsInstalledProduct
     {

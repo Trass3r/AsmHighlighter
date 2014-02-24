@@ -74,63 +74,64 @@ namespace AsmHighlighter
             return Parse(lineOut, maxTokens);
         }
 
-        public bool ScanTokenAndProvideInfoAboutIt(TokenInfo tokenInfo, ref int state)
-        {
-            int start, end;
-            AsmHighlighterToken token = (AsmHighlighterToken)lex.GetNext(ref state, out start, out end);
+		public bool ScanTokenAndProvideInfoAboutIt(TokenInfo tokenInfo, ref int state)
+		{
+			int start, end;
+			AsmHighlighterToken token = (AsmHighlighterToken)lex.GetNext(ref state, out start, out end);
 
-            // !EOL and !EOF
-            if (token != AsmHighlighterToken.EOF)
-            {
-                tokenInfo.StartIndex = start;
-                tokenInfo.EndIndex = end;
+			// !EOL and !EOF
+			if (token == AsmHighlighterToken.EOF)
+				return false;
 
-                switch (token)
-                {
-                    case AsmHighlighterToken.INSTRUCTION:
-                        tokenInfo.Color = TokenColor.Keyword;
-                        tokenInfo.Type = TokenType.Keyword;
-                        break;
-                    case AsmHighlighterToken.COMMENT_LINE:
-                        tokenInfo.Color = TokenColor.Comment;
-                        tokenInfo.Type = TokenType.LineComment;
-                        break;
-                    case AsmHighlighterToken.NUMBER:
-                    case AsmHighlighterToken.FLOAT:
-                        tokenInfo.Color = TokenColor.Number;
-                        tokenInfo.Type = TokenType.Literal;
-                        break;
-                    case AsmHighlighterToken.STRING_LITERAL:
-                        tokenInfo.Color = TokenColor.String;
-                        tokenInfo.Type = TokenType.String;
-                        break;
-                    case AsmHighlighterToken.REGISTER:
-                    case AsmHighlighterToken.REGISTER_FPU:
-                    case AsmHighlighterToken.REGISTER_MMXSSE:
-                        // hugly. TODO generate a AsmHighlighterTokenColor to keep tracks of 6-7-8 TokenColors
-                        tokenInfo.Color = (TokenColor)6;
-                        tokenInfo.Type = TokenType.Identifier;
-                        break;
-                    case AsmHighlighterToken.FPUPROCESSOR:
-                        tokenInfo.Color = (TokenColor)7;
-                        tokenInfo.Type = TokenType.Identifier;
-                        break;
-                    case AsmHighlighterToken.DIRECTIVE:
-                        tokenInfo.Color = (TokenColor)8;
-                        tokenInfo.Type = TokenType.Keyword;
-                        break;
-                    case AsmHighlighterToken.SIMDPROCESSOR:
-                        tokenInfo.Color = (TokenColor)9;
-                        tokenInfo.Type = TokenType.Keyword;
-                        break;
-                    default:
-                        tokenInfo.Color = TokenColor.Text;
-                        tokenInfo.Type = TokenType.Text;
-                        break;
-                }
-                return true;
-            }
-            return false;
-        }
+			tokenInfo.StartIndex = start;
+			tokenInfo.EndIndex = end;
+
+			switch (token)
+			{
+				case AsmHighlighterToken.INSTRUCTION:
+					tokenInfo.Color = TokenColor.Keyword;
+					tokenInfo.Type = TokenType.Keyword;
+					break;
+				case AsmHighlighterToken.COMMENT_LINE:
+					tokenInfo.Color = TokenColor.Comment;
+					tokenInfo.Type = TokenType.LineComment;
+					break;
+				case AsmHighlighterToken.NUMBER:
+				case AsmHighlighterToken.FLOAT:
+					tokenInfo.Color = TokenColor.Number;
+					tokenInfo.Type = TokenType.Literal;
+					break;
+				case AsmHighlighterToken.STRING_LITERAL:
+					tokenInfo.Color = TokenColor.String;
+					tokenInfo.Type = TokenType.String;
+					break;
+				case AsmHighlighterToken.REGISTER:
+				case AsmHighlighterToken.REGISTER_FPU:
+				case AsmHighlighterToken.REGISTER_MMXSSE:
+				case AsmHighlighterToken.REGISTER_AVX:
+				case AsmHighlighterToken.REGISTER_AVX512:
+					// hugly. TODO generate a AsmHighlighterTokenColor to keep tracks of 6-7-8 TokenColors
+					tokenInfo.Color = TokenColor.String;
+					tokenInfo.Type = TokenType.Identifier;
+					break;
+				case AsmHighlighterToken.FPUPROCESSOR:
+					tokenInfo.Color = TokenColor.Identifier;
+					tokenInfo.Type = TokenType.Identifier;
+					break;
+				case AsmHighlighterToken.DIRECTIVE:
+					tokenInfo.Color = TokenColor.Keyword;
+					tokenInfo.Type = TokenType.Keyword;
+					break;
+				case AsmHighlighterToken.SIMDPROCESSOR:
+					tokenInfo.Color = TokenColor.Keyword;
+					tokenInfo.Type = TokenType.Keyword;
+					break;
+				default:
+					tokenInfo.Color = TokenColor.Text;
+					tokenInfo.Type = TokenType.Text;
+					break;
+			}
+			return true;
+		}
     }
 }

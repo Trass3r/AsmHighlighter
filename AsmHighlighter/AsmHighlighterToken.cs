@@ -33,6 +33,8 @@ namespace AsmHighlighter.Lexer
         REGISTER = 7 | IS_REGISTER,
         REGISTER_FPU = 8 | IS_REGISTER,
         REGISTER_MMXSSE = 9 | IS_REGISTER,
+		REGISTER_AVX = 20 | IS_REGISTER,
+		REGISTER_AVX512 = 21 | IS_REGISTER,
         COMMENT_LINE = 10,
         NUMBER = 11 | IS_NUMBER,
         FLOAT = 12 | IS_NUMBER,
