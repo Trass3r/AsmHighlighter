@@ -45,6 +45,9 @@ namespace AsmHighlighter.Lexer
         RIGHT_PARENTHESIS = 17, 
         LEFT_SQUARE_BRACKET = 18, 
         RIGHT_SQUARE_BRACKET = 19,
+		SSE4 = 22,
+		AVX2 = 23,
+		FMA = 24,
 
         IS_REGISTER = 0x80000000,
         IS_INSTRUCTION = 0x40000000,
