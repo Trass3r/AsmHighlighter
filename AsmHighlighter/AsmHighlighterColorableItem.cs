@@ -25,7 +25,7 @@ namespace AsmHighlighter
     public class AsmHighlighterColorableItem : ColorableItem
     {
         public AsmHighlighterColorableItem(string name, COLORINDEX foreColor, COLORINDEX backColor)
-            : base(name, name, foreColor, backColor, Color.Empty, Color.Empty, FONTFLAGS.FF_DEFAULT)
+            : base(name, name, foreColor, backColor, Color.Red, Color.Empty, FONTFLAGS.FF_DEFAULT)
         {
         }
 

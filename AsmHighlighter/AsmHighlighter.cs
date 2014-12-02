@@ -60,7 +60,7 @@ namespace AsmHighlighter
     [ProvideLanguageService(typeof(AsmHighlighterLanguageService),
                              "ASM Language",
                              0,
-                             RequestStockColors = true,
+                             RequestStockColors = false,
                              EnableCommenting = true,
                              EnableFormatSelection =  true,
                              EnableLineNumbers =  true,
@@ -98,6 +98,7 @@ namespace AsmHighlighter
             base.Initialize();
 
             // Proffer the service.
+#if true
             IServiceContainer serviceContainer = this as IServiceContainer;
             AsmHighlighterLanguageService langService = new AsmHighlighterLanguageService();
             langService.SetSite(this);
@@ -105,6 +106,26 @@ namespace AsmHighlighter
                                         langService,
                                         true);
         }
+#else
+
+			// Proffer language service on demand
+			ServiceCreatorCallback callback = new ServiceCreatorCallback(CreateLanguageService);
+			((IServiceContainer)this).AddService(typeof(AsmHighlighterLanguageService), callback, true);
+        }
+		private object CreateLanguageService(IServiceContainer container, Type serviceType)
+		{
+			if (container == this)
+			{
+				if (typeof(AsmHighlighterLanguageService) == serviceType)
+				{
+					AsmHighlighterLanguageService langSvc = new AsmHighlighterLanguageService();
+					langSvc.SetSite(this);
+					return langSvc;
+				}
+			}
+			return null;
+		}
+#endif
        #endregion
 
         #region Implementation of IVsInstalledProduct

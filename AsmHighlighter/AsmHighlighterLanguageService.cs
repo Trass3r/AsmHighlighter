@@ -37,26 +37,26 @@ namespace AsmHighlighter
         public AsmHighlighterLanguageService()
         {
             m_colorableItems = new ColorableItem[]
-                                   {
-                                        /* 1 */
-                                        new AsmHighlighterColorableItem("ASM Language - Instruction", "ASM Language - Instruction", COLORINDEX.CI_BLUE, COLORINDEX.CI_USERTEXT_BK),
-                                        /* 2 */
-                                        new AsmHighlighterColorableItem("ASM Language - Comment", "ASM Language - Comment", COLORINDEX.CI_DARKGREEN, COLORINDEX.CI_USERTEXT_BK),
-                                        /* 3 */
-                                        new AsmHighlighterColorableItem("ASM Language - Identifier", "ASM Language - Identifier", COLORINDEX.CI_SYSPLAINTEXT_FG, COLORINDEX.CI_USERTEXT_BK),
-                                        /* 4 */
-                                        new AsmHighlighterColorableItem("ASM Language - String", "ASM Language - String", COLORINDEX.CI_RED, COLORINDEX.CI_USERTEXT_BK),
-                                        /* 5 */
-                                        new AsmHighlighterColorableItem("ASM Language - Number", "ASM Language - Number", COLORINDEX.CI_DARKBLUE, COLORINDEX.CI_USERTEXT_BK),
-                                        /* 6 */
-                                        new AsmHighlighterColorableItem("ASM Language - Register", "ASM Language - Register", COLORINDEX.CI_MAROON, COLORINDEX.CI_USERTEXT_BK, FONTFLAGS.FF_BOLD),
-                                        /* 7 */
-                                        new AsmHighlighterColorableItem("ASM Language - FpuInstruction", "ASM Language - FpuInstruction", COLORINDEX.CI_AQUAMARINE, COLORINDEX.CI_USERTEXT_BK),
-                                        /* 8 */
-                                        new AsmHighlighterColorableItem("ASM Language - Directive", "ASM Language - Directive", COLORINDEX.CI_PURPLE, COLORINDEX.CI_USERTEXT_BK),
-                                        /* 9 */
-                                        new AsmHighlighterColorableItem("ASM Language - SimdInstruction", "ASM Language - SimdInstruction", COLORINDEX.CI_AQUAMARINE, COLORINDEX.CI_USERTEXT_BK, FONTFLAGS.FF_BOLD),
-                                   };
+            {
+				// The first 6 items in this list MUST be these default items.
+				new AsmHighlighterColorableItem("Keyword", COLORINDEX.CI_BLUE, COLORINDEX.CI_USERTEXT_BK),
+				new AsmHighlighterColorableItem("Comment", COLORINDEX.CI_DARKGREEN, COLORINDEX.CI_USERTEXT_BK),
+				new AsmHighlighterColorableItem("Identifier", COLORINDEX.CI_USERTEXT_FG, COLORINDEX.CI_USERTEXT_BK),
+				new AsmHighlighterColorableItem("String", COLORINDEX.CI_MAROON, COLORINDEX.CI_USERTEXT_BK),
+				new AsmHighlighterColorableItem("Number", COLORINDEX.CI_USERTEXT_FG, COLORINDEX.CI_USERTEXT_BK),
+//				new AsmHighlighterColorableItem("Text", COLORINDEX.CI_USERTEXT_FG, COLORINDEX.CI_USERTEXT_BK),
+
+				// 6..
+//				new AsmHighlighterColorableItem("ASM Instruction", COLORINDEX.CI_BLUE, COLORINDEX.CI_USERTEXT_BK),
+//				new AsmHighlighterColorableItem("ASM Comment", COLORINDEX.CI_DARKGREEN, COLORINDEX.CI_USERTEXT_BK),
+//				new AsmHighlighterColorableItem("ASM Identifier", COLORINDEX.CI_SYSPLAINTEXT_FG, COLORINDEX.CI_USERTEXT_BK),
+//				new AsmHighlighterColorableItem("ASM String", COLORINDEX.CI_RED, COLORINDEX.CI_USERTEXT_BK),
+//				new AsmHighlighterColorableItem("ASM Number", COLORINDEX.CI_DARKBLUE, COLORINDEX.CI_USERTEXT_BK),
+				new AsmHighlighterColorableItem("ASM Register", COLORINDEX.CI_MAROON, COLORINDEX.CI_USERTEXT_BK, FONTFLAGS.FF_BOLD),
+				new AsmHighlighterColorableItem("ASM FpuInstruction", COLORINDEX.CI_AQUAMARINE, COLORINDEX.CI_USERTEXT_BK),
+				new AsmHighlighterColorableItem("ASM Directive", COLORINDEX.CI_PURPLE, COLORINDEX.CI_USERTEXT_BK),
+				new AsmHighlighterColorableItem("ASM SimdInstruction", COLORINDEX.CI_AQUAMARINE, COLORINDEX.CI_USERTEXT_BK, FONTFLAGS.FF_BOLD)
+			};
 
             vs = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as DTE;
         }
@@ -71,7 +71,7 @@ namespace AsmHighlighter
             }
             return isDebugging;
         }
-/*
+
         public override int GetItemCount(out int count)
         {
             count = m_colorableItems.Length;
@@ -80,15 +80,13 @@ namespace AsmHighlighter
 
         public override int GetColorableItem(int index, out IVsColorableItem item)
         {
-            if (index < 1)
-            {
+            if (index < 1 || index > m_colorableItems.Length)
                 throw new ArgumentOutOfRangeException("index");
-            }
 
             item = m_colorableItems[index-1];
             return VSConstants.S_OK;
         }
-*/
+
         public override LanguagePreferences GetLanguagePreferences()
         {
             if (m_preferences == null)

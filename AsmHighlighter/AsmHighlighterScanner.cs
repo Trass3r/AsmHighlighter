@@ -111,22 +111,22 @@ namespace AsmHighlighter
 				case AsmHighlighterToken.REGISTER_AVX:
 				case AsmHighlighterToken.REGISTER_AVX512:
 					// hugly. TODO generate a AsmHighlighterTokenColor to keep tracks of 6-7-8 TokenColors
-					tokenInfo.Color = TokenColor.String;
+					tokenInfo.Color = (TokenColor)6;
 					tokenInfo.Type = TokenType.Identifier;
 					break;
 				case AsmHighlighterToken.FPUPROCESSOR:
-					tokenInfo.Color = TokenColor.Identifier;
+					tokenInfo.Color = (TokenColor)7;
 					tokenInfo.Type = TokenType.Identifier;
 					break;
 				case AsmHighlighterToken.DIRECTIVE:
-					tokenInfo.Color = TokenColor.Keyword;
+					tokenInfo.Color = (TokenColor)8;
 					tokenInfo.Type = TokenType.Keyword;
 					break;
 				case AsmHighlighterToken.SIMDPROCESSOR:
 				case AsmHighlighterToken.SSE4:
 				case AsmHighlighterToken.AVX2:
 				case AsmHighlighterToken.FMA:
-					tokenInfo.Color = TokenColor.Keyword;
+					tokenInfo.Color = (TokenColor)9;
 					tokenInfo.Type = TokenType.Keyword;
 					break;
 				default:
