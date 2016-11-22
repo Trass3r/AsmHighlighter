@@ -16,7 +16,6 @@
 //  ------------------------------------------------------------------
 #endregion
 using System;
-using System.Runtime.InteropServices;
 using Microsoft.VisualStudio.Shell;
 
 namespace AsmHighlighter
@@ -41,7 +40,7 @@ namespace AsmHighlighter
         /// <param name="VendorGuid">String represenring GUID of vendor of language to register evakluator for</param>
         public RegisterExpressionEvaluatorAttribute(Type type, string LanguageGuid, string VendorGuid)
         {
-            if (type == null) throw new ArgumentNullException("type");
+            if (type == null) throw new ArgumentNullException(nameof(type));
             this.type = type;
             this.languageGuid = new Guid(LanguageGuid);
             this.vendorGuid = new Guid(VendorGuid);

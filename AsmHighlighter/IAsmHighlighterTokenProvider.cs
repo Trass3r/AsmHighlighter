@@ -15,7 +15,6 @@
 // 
 //  ------------------------------------------------------------------
 #endregion
-using System;
 
 namespace AsmHighlighter.Lexer
 {

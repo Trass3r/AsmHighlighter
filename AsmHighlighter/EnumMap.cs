@@ -23,7 +23,7 @@ using System.Text.RegularExpressions;
 
 namespace AsmHighlighter
 {
-
+    [Serializable]
     public class EnumMap<T> : Dictionary<string, T>
     {
         public void Load(string resource)

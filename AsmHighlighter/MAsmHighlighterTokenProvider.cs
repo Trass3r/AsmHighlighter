@@ -15,7 +15,6 @@
 // 
 //  ------------------------------------------------------------------
 #endregion
-using System.Collections.Generic;
 using AsmHighlighter.Lexer;
 
 namespace AsmHighlighter

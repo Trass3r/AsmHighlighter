@@ -16,7 +16,6 @@
 //  ------------------------------------------------------------------
 #endregion
 using System;
-using System.Runtime.InteropServices;
 using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Debugger.Interop;

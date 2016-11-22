@@ -21,7 +21,6 @@
 //
 using System;
 using System.IO;
-using System.Collections.Generic;
 #if !STANDALONE
 using Babel.ParserGenerator;
 #endif // STANDALONE

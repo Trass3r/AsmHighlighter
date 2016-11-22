@@ -81,7 +81,7 @@ namespace AsmHighlighter
         public override int GetColorableItem(int index, out IVsColorableItem item)
         {
             if (index < 1 || index > m_colorableItems.Length)
-                throw new ArgumentOutOfRangeException("index");
+                throw new ArgumentOutOfRangeException(nameof(index));
 
             item = m_colorableItems[index-1];
             return VSConstants.S_OK;
@@ -124,10 +124,7 @@ namespace AsmHighlighter
             return "";
         }
 
-        public override string Name
-        {
-            get { return "ASM Language"; }
-        }
+        public override string Name => "ASM Language";
 
         /// <summary>
         /// Validates the breakpoint location.
