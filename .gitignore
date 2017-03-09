@@ -1,5 +1,6 @@
-*.opensdf
-*.sdf
 bin/
 obj/
+.vs/
+*.db
 *.suo
+_Resharper*
