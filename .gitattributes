@@ -1,1 +1,4 @@
 * text=auto
+
+*.cs   text diff=csharp
+*.cpp  text diff=cpp
