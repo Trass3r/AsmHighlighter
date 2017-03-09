@@ -15,6 +15,10 @@
 //
 //  ------------------------------------------------------------------
 #endregion
+
+// not used currently and references RegistrationAttribute which moved in VS2017
+#if false
+
 using System;
 using Microsoft.VisualStudio.Shell;
 
@@ -96,3 +100,4 @@ namespace AsmHighlighter
     }
 
 }
+#endif
