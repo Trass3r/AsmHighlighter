@@ -1,18 +1,18 @@
 #region Header Licence
 //  ---------------------------------------------------------------------
-// 
-//  Copyright (c) 2009 Alexandre Mutel and Microsoft Corporation.  
+//
+//  Copyright (c) 2009 Alexandre Mutel and Microsoft Corporation.
 //  All rights reserved.
-// 
+//
 //  This code module is part of AsmHighlighter, a plugin for visual studio
 //  to provide syntax highlighting for x86 ASM language (.asm, .inc)
-// 
+//
 //  ------------------------------------------------------------------
-// 
-//  This code is licensed under the Microsoft Public License. 
+//
+//  This code is licensed under the Microsoft Public License.
 //  See the file License.txt for the license details.
 //  More info on: http://asmhighlighter.codeplex.com
-// 
+//
 //  ------------------------------------------------------------------
 #endregion
 using System;
@@ -23,9 +23,9 @@ namespace AsmHighlighter
     /// <summary>
     /// Code taken from http://phalanger.codeplex.com
     /// Unfortunately, the expression evaluator is not working. Don't know why...
-    /// 
-    ///     This attribute registers Expression Evaluator for a package.  The attributes on a 
-    ///     package do not control the behavior of the package, but they can be used by registration 
+    ///
+    ///     This attribute registers Expression Evaluator for a package.  The attributes on a
+    ///     package do not control the behavior of the package, but they can be used by registration
     ///     tools to register the proper information with Visual Studio.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = true, Inherited = true)]

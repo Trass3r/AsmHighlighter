@@ -1,18 +1,18 @@
 #region Header Licence
 //  ---------------------------------------------------------------------
-// 
-//  Copyright (c) 2009 Alexandre Mutel and Microsoft Corporation.  
+//
+//  Copyright (c) 2009 Alexandre Mutel and Microsoft Corporation.
 //  All rights reserved.
-// 
+//
 //  This code module is part of AsmHighlighter, a plugin for visual studio
 //  to provide syntax highlighting for x86 ASM language (.asm, .inc)
-// 
+//
 //  ------------------------------------------------------------------
-// 
-//  This code is licensed under the Microsoft Public License. 
+//
+//  This code is licensed under the Microsoft Public License.
 //  See the file License.txt for the license details.
 //  More info on: http://asmhighlighter.codeplex.com
-// 
+//
 //  ------------------------------------------------------------------
 #endregion
 
@@ -27,7 +27,7 @@ using AsmHighlighter.Lexer;
 namespace AsmHighlighter
 {
     /// <summary>
-    /// Alpha version for reformatting. After some test (more particularly with prepropressor directives), 
+    /// Alpha version for reformatting. After some test (more particularly with prepropressor directives),
     /// we definitely need a fully implemented lexical-parser in order to perform a correct reformatting.
     /// </summary>
     public class AsmHighlighterFormatHelper
@@ -221,8 +221,8 @@ namespace AsmHighlighter
                                 if ( countRegisterInBracket == 0)
                                 {
                                     // Fake dword adress if we have mov [IDENTIFIER + ....]
-                                    stripReplace = "123123";                                    
-                                }                                 
+                                    stripReplace = "123123";
+                                }
                             }
                         }
                         break;
@@ -237,14 +237,14 @@ namespace AsmHighlighter
 
                     changes.Add(new EditSpan(editTextSpan, stripReplace));
                 }
-                token = (AsmHighlighterToken)lexer.GetNext(ref state, out start, out end);                
+                token = (AsmHighlighterToken)lexer.GetNext(ref state, out start, out end);
             }
 
             for (int i = changes.Count - 1; i >= 0; i-- )
             {
                 EditSpan editSpan = changes[i];
                 codeToFormat = codeToFormat.Substring(0, editSpan.Span.iStartIndex) + editSpan.Text +
-                               codeToFormat.Substring(editSpan.Span.iEndIndex, codeToFormat.Length - editSpan.Span.iEndIndex);                                    
+                               codeToFormat.Substring(editSpan.Span.iEndIndex, codeToFormat.Length - editSpan.Span.iEndIndex);
             }
 
             // Force the FASM code to 32 bit
@@ -326,7 +326,7 @@ namespace AsmHighlighter
                             if (!commentFound)
                             {
                                 commentFound = true;
-                                commentStart = start;                                
+                                commentStart = start;
                             }
                             break;
                     }
@@ -355,7 +355,7 @@ namespace AsmHighlighter
                         editTextSpan.iEndIndex = commentStart+1;
                         if ((codeToFormat.Length - commentStart) > 2 && codeToFormat.Substring(commentStart, 2) == ";#")
                         {
-                            editTextSpan.iEndIndex = editTextSpan.iEndIndex + 2;                            
+                            editTextSpan.iEndIndex = editTextSpan.iEndIndex + 2;
                         }
 
                         string text = ";#" + ((buffer == null) ? "?" : string.Format("{0:X}",buffer.Length));

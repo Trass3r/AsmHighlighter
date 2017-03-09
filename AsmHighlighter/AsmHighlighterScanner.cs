@@ -1,18 +1,18 @@
 #region Header Licence
 //  ---------------------------------------------------------------------
-// 
-//  Copyright (c) 2009 Alexandre Mutel and Microsoft Corporation.  
+//
+//  Copyright (c) 2009 Alexandre Mutel and Microsoft Corporation.
 //  All rights reserved.
-// 
+//
 //  This code module is part of AsmHighlighter, a plugin for visual studio
 //  to provide syntax highlighting for x86 ASM language (.asm, .inc)
-// 
+//
 //  ------------------------------------------------------------------
-// 
-//  This code is licensed under the Microsoft Public License. 
+//
+//  This code is licensed under the Microsoft Public License.
 //  See the file License.txt for the license details.
 //  More info on: http://asmhighlighter.codeplex.com
-// 
+//
 //  ------------------------------------------------------------------
 #endregion
 
@@ -30,7 +30,7 @@ namespace AsmHighlighter
         public AsmHighlighterScanner(IAsmHighlighterTokenProvider tokenProvider)
         {
             lex = new Scanner();
-            lex.AsmHighlighterTokenProvider = tokenProvider;            
+            lex.AsmHighlighterTokenProvider = tokenProvider;
         }
 
         public void SetSource(string source, int offset)
@@ -58,7 +58,7 @@ namespace AsmHighlighter
                 TokenInfo tokenInfo = new TokenInfo();
                 tokenInfo.StartIndex = start;
                 tokenInfo.EndIndex = end;
-                tokenInfo.Token = (int)token;                
+                tokenInfo.Token = (int)token;
                 tokenInfos.Add(tokenInfo);
                 token = (AsmHighlighterToken)lex.GetNext(ref state, out start, out end);
             }

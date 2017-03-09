@@ -165,7 +165,7 @@ namespace Fasm
 		_C_FASM_STATE * fasm_state = reinterpret_cast<_C_FASM_STATE *>(_c_fasm_memorybuf);
 		if (fasm_state->condition != FASM_OK)
 			throw gcnew Exception(String::Format("Assembly failed!  Error code: {0};  Error Line: {1}", fasm_state->error_code, fasm_state->error_data->line_number));
-		
+
 		return WriteProcessMemory((HANDLE)hProcess, (void *)dwAddress, fasm_state->output_data, fasm_state->output_length, NULL);
 	}
 
@@ -202,7 +202,7 @@ namespace Fasm
 		{
 			CloseHandle(hThread);
 		}
-		
+
 		return dwExitCode;
 	}
 
@@ -259,7 +259,7 @@ namespace Fasm
 
 		dwAssembleRet = _c_FasmAssemble((char *)lpSource.ToPointer(), nMemorySize, nPassLimit);
 		fasm_state = reinterpret_cast<_C_FASM_STATE *>(_c_fasm_memorybuf);
-		
+
 		Marshal::FreeHGlobal(lpSource);
 
 		if (fasm_state->condition == FASM_OK)
@@ -271,7 +271,7 @@ namespace Fasm
 		{
 			throw gcnew Exception(String::Format("Assembly failed!  Error code: {0};  Error Line: {1}", fasm_state->error_code, fasm_state->error_data->line_number));
 		}
-		
+
 		return bBytecode;
 	}
 #pragma endregion

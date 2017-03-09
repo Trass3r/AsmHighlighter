@@ -1,18 +1,18 @@
 #region Header Licence
 //  ---------------------------------------------------------------------
-// 
-//  Copyright (c) 2009 Alexandre Mutel and Microsoft Corporation.  
+//
+//  Copyright (c) 2009 Alexandre Mutel and Microsoft Corporation.
 //  All rights reserved.
-// 
+//
 //  This code module is part of AsmHighlighter, a plugin for visual studio
 //  to provide syntax highlighting for x86 ASM language (.asm, .inc)
-// 
+//
 //  ------------------------------------------------------------------
-// 
-//  This code is licensed under the Microsoft Public License. 
+//
+//  This code is licensed under the Microsoft Public License.
 //  See the file License.txt for the license details.
 //  More info on: http://asmhighlighter.codeplex.com
-// 
+//
 //  ------------------------------------------------------------------
 #endregion
 using System;
@@ -21,11 +21,11 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Debugger.Interop;
 
 namespace AsmHighlighter
-{      
+{
     /// <summary>
     /// TODO : NOT USED. THIS IS NOT WORKING
-    /// 
-    /// ASM Expression evaluator implementation.  This is the original entry point into 
+    ///
+    /// ASM Expression evaluator implementation.  This is the original entry point into
     /// the expression evaluator
     /// </summary>
 //    [Guid("E6A6B6A4-4DEF-4526-9F16-D0F7F28B407F")]

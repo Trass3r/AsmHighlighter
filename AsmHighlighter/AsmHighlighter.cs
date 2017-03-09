@@ -1,18 +1,18 @@
 ﻿#region Header Licence
 //  ---------------------------------------------------------------------
-// 
-//  Copyright (c) 2009 Alexandre Mutel and Microsoft Corporation.  
+//
+//  Copyright (c) 2009 Alexandre Mutel and Microsoft Corporation.
 //  All rights reserved.
-// 
+//
 //  This code module is part of AsmHighlighter, a plugin for visual studio
 //  to provide syntax highlighting for x86 ASM language (.asm, .inc)
-// 
+//
 //  ------------------------------------------------------------------
-// 
-//  This code is licensed under the Microsoft Public License. 
+//
+//  This code is licensed under the Microsoft Public License.
 //  See the file License.txt for the license details.
 //  More info on: http://asmhighlighter.codeplex.com
-// 
+//
 //  ------------------------------------------------------------------
 #endregion
 using System;
@@ -32,8 +32,8 @@ namespace AsmHighlighter
     /// The minimum requirement for a class to be considered a valid package for Visual Studio
     /// is to implement the IVsPackage interface and register itself with the shell.
     /// This package uses the helper classes defined inside the Managed Package Framework (MPF)
-    /// to do it: it derives from the Package class that provides the implementation of the 
-    /// IVsPackage interface and uses the registration attributes defined in the framework to 
+    /// to do it: it derives from the Package class that provides the implementation of the
+    /// IVsPackage interface and uses the registration attributes defined in the framework to
     /// register itself and its components with the shell.
     /// </summary>
     // This attribute tells the registration utility (regpkg.exe) that this class needs
@@ -48,9 +48,9 @@ namespace AsmHighlighter
     [DefaultRegistryRoot("Software\\Microsoft\\VisualStudio\\12.0")]
 
     //[InstalledProductRegistration(true, null, null, null)]
-    // In order be loaded inside Visual Studio in a machine that has not the VS SDK installed, 
-    // package needs to have a valid load key (it can be requested at 
-    // http://msdn.microsoft.com/vstudio/extend/). This attributes tells the shell that this 
+    // In order be loaded inside Visual Studio in a machine that has not the VS SDK installed,
+    // package needs to have a valid load key (it can be requested at
+    // http://msdn.microsoft.com/vstudio/extend/). This attributes tells the shell that this
     // package has a load key embedded in its resources.
     [ProvideService(typeof(AsmHighlighterLanguageService), ServiceName = "AsmHighlighter")]
     // [RegisterExpressionEvaluator(typeof(AsmExpressionEvaluator), GuidList.AsmLanguageGuid, GuidList.MicrosoftVendorGuid)]
@@ -71,9 +71,9 @@ namespace AsmHighlighter
     {
         /// <summary>
         /// Default constructor of the package.
-        /// Inside this method you can place any initialization code that does not require 
-        /// any Visual Studio service because at this point the package object is created but 
-        /// not sited yet inside Visual Studio environment. The place to do all the other 
+        /// Inside this method you can place any initialization code that does not require
+        /// any Visual Studio service because at this point the package object is created but
+        /// not sited yet inside Visual Studio environment. The place to do all the other
         /// initialization is the Initialize method.
         /// </summary>
         public AsmHighlighter()

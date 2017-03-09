@@ -27,11 +27,11 @@ using Babel.ParserGenerator;
 
 
 namespace AsmHighlighter.Lexer
-{   
+{
     /// <summary>
     /// Summary Canonical example of MPLEX automaton
     /// </summary>
-    
+
 #if STANDALONE
     //
     // These are the dummy declarations for stand-alone MPLEX applications
@@ -40,8 +40,8 @@ namespace AsmHighlighter.Lexer
     //
 
     public enum Tokens
-    { 
-      EOF = 0, maxParseToken = int.MaxValue 
+    {
+      EOF = 0, maxParseToken = int.MaxValue
       // must have at least these two, values are almost arbitrary
     }
 
@@ -55,14 +55,14 @@ namespace AsmHighlighter.Lexer
         //
         public virtual int EolState { get { return CurrentSc; } set { CurrentSc = value; } }
     }
-    
+
     public interface IColorScan
     {
         void SetSource(string source, int offset);
         int GetNext(ref int state, out int start, out int end);
     }
-    
-    
+
+
 
 #endif // STANDALONE
 
@@ -75,24 +75,24 @@ namespace AsmHighlighter.Lexer
         public abstract int ReadPos { get; }
         public abstract string GetString(int b, int e);
     }
-    
+
     // If the compiler can't find ScanBase maybe you need
     // to run mppg with /mplex, or run mplex with /noparser
     public sealed class Scanner : ScanBase, IColorScan
     {
-   
+
         public ScanBuff buffer;
         private IErrorHandler handler;
         int scState;
-        
+
         private static int GetMaxParseToken() {
             System.Reflection.FieldInfo f = typeof(Tokens).GetField("maxParseToken");
             return (f == null ? int.MaxValue : (int)f.GetValue(null));
         }
-        
-        static int parserMax = GetMaxParseToken();        
-        
-        protected override int CurrentSc 
+
+        static int parserMax = GetMaxParseToken();
+
+        protected override int CurrentSc
         {
              // The current start state is a property
              // to try to avoid the user error of setting
@@ -102,7 +102,7 @@ namespace AsmHighlighter.Lexer
              get { return scState; }
              set { scState = value; currentStart = startState[value]; }
         }
-        
+
         enum Result {accept, noMatch, contextFound};
 
         const int maxAccept = 34;
@@ -115,19 +115,19 @@ namespace AsmHighlighter.Lexer
 //  ASMHighlighterMPLexer.lex.
 //  Lexical description for MPLex. This file is inspired from http://svn.assembla.com/svn/ppjlab/trunk/scanner.lex
 //  ---------------------------------------------------------------------
-// 
-//  Copyright (c) 2009 Alexandre Mutel and Microsoft Corporation.  
+//
+//  Copyright (c) 2009 Alexandre Mutel and Microsoft Corporation.
 //  All rights reserved.
-// 
+//
 //  This code module is part of AsmHighlighter, a plugin for visual studio
 //  to provide syntax highlighting for x86 ASM language (.asm, .inc)
-// 
+//
 //  ------------------------------------------------------------------
-// 
-//  This code is licensed under the Microsoft Public License. 
+//
+//  This code is licensed under the Microsoft Public License.
 //  See the file License.txt for the license details.
 //  More info on: http://asmhighlighter.codeplex.com
-// 
+//
 //  ------------------------------------------------------------------
 */
 /**********************************************************************************/
@@ -162,7 +162,7 @@ public IAsmHighlighterTokenProvider AsmHighlighterTokenProvider = null; // Token
         int tokECol;       // column number at end of token
         int tokELin;       // line number at end of token
         string tokTxt;     // lazily constructed text of token
-#if STACK          
+#if STACK
         private Stack<int> scStack = new Stack<int>();
 #endif // STACK
 
@@ -185,13 +185,13 @@ public IAsmHighlighterTokenProvider AsmHighlighterTokenProvider = null; // Token
     // There are 1 runs, 0 singletons
     //
     static sbyte[] map0 = new sbyte[125] {
-/* \0     */ 2, 2, 2, 2, 2, 2, 2, 2, 2, 30, 0, 30, 30, 30, 2, 2, 
-/* \020   */ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 
-/* \040   */ 30, 2, 22, 2, 2, 11, 28, 24, 5, 7, 2, 18, 25, 19, 8, 2, 
-/* 0      */ 15, 15, 6, 6, 6, 6, 6, 6, 6, 6, 2, 1, 2, 2, 2, 2, 
-/* @      */ 10, 12, 12, 12, 12, 17, 21, 9, 20, 9, 9, 9, 9, 9, 9, 9, 
-/* P      */ 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 26, 23, 27, 2, 9, 
-/* `      */ 2, 12, 16, 12, 14, 17, 21, 9, 13, 9, 9, 9, 9, 9, 9, 9, 
+/* \0     */ 2, 2, 2, 2, 2, 2, 2, 2, 2, 30, 0, 30, 30, 30, 2, 2,
+/* \020   */ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+/* \040   */ 30, 2, 22, 2, 2, 11, 28, 24, 5, 7, 2, 18, 25, 19, 8, 2,
+/* 0      */ 15, 15, 6, 6, 6, 6, 6, 6, 6, 6, 2, 1, 2, 2, 2, 2,
+/* @      */ 10, 12, 12, 12, 12, 17, 21, 9, 20, 9, 9, 9, 9, 9, 9, 9,
+/* P      */ 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 26, 23, 27, 2, 9,
+/* `      */ 2, 12, 16, 12, 14, 17, 21, 9, 13, 9, 9, 9, 9, 9, 9, 9,
 /* p      */ 9, 9, 9, 3, 4, 9, 9, 9, 9, 9, 9, 2, 29 };
 
     sbyte Map(int chr)
@@ -213,29 +213,29 @@ public IAsmHighlighterTokenProvider AsmHighlighterTokenProvider = null; // Token
     NxS[3] = // Shortest string "\0"
         new Table(0, 0, -1, null);
     NxS[4] = // Shortest string "s"
-        new Table(3, 19, -1, new sbyte[] {5, 32, -1, 5, -1, -1, 
+        new Table(3, 19, -1, new sbyte[] {5, 32, -1, 5, -1, -1,
         5, -1, -1, 5, 5, 5, 5, 5, 5, -1, -1, 5, 5});
     NxS[5] = // Shortest string "t"
-        new Table(3, 19, -1, new sbyte[] {5, 5, -1, 5, -1, -1, 
+        new Table(3, 19, -1, new sbyte[] {5, 5, -1, 5, -1, -1,
         5, -1, -1, 5, 5, 5, 5, 5, 5, -1, -1, 5, 5});
     NxS[6] = // Shortest string "("
         new Table(0, 0, -1, null);
     NxS[7] = // Shortest string "2"
-        new Table(6, 16, -1, new sbyte[] {7, -1, 24, -1, -1, -1, 
+        new Table(6, 16, -1, new sbyte[] {7, -1, 24, -1, -1, -1,
         40, 25, 26, 7, 40, 41, -1, -1, -1, 40});
     NxS[8] = // Shortest string ")"
         new Table(0, 0, -1, null);
     NxS[9] = // Shortest string "."
-        new Table(3, 19, -1, new sbyte[] {9, 9, -1, 9, -1, -1, 
+        new Table(3, 19, -1, new sbyte[] {9, 9, -1, 9, -1, -1,
         9, -1, -1, 9, 9, 9, 9, 9, 9, -1, -1, 9, 9});
     NxS[10] = // Shortest string "@"
-        new Table(3, 19, -1, new sbyte[] {10, 10, -1, 10, -1, -1, 
+        new Table(3, 19, -1, new sbyte[] {10, 10, -1, 10, -1, -1,
         10, -1, -1, 10, 10, 10, 10, 10, 10, -1, -1, 10, 10});
     NxS[11] = // Shortest string "%"
-        new Table(3, 19, -1, new sbyte[] {11, 11, -1, 11, -1, -1, 
+        new Table(3, 19, -1, new sbyte[] {11, 11, -1, 11, -1, -1,
         11, -1, -1, 11, 11, 11, 11, 11, 11, -1, -1, 11, 11});
     NxS[12] = // Shortest string "0"
-        new Table(6, 16, -1, new sbyte[] {7, -1, 24, -1, -1, -1, 
+        new Table(6, 16, -1, new sbyte[] {7, -1, 24, -1, -1, -1,
         40, 25, 26, 12, 27, 41, -1, -1, -1, 40});
     NxS[13] = // Shortest string "+"
         new Table(0, 0, -1, null);
@@ -260,38 +260,38 @@ public IAsmHighlighterTokenProvider AsmHighlighterTokenProvider = null; // Token
     NxS[23] = // Shortest string """"
         new Table(0, 0, -1, null);
     NxS[24] = // Shortest string "0."
-        new Table(6, 16, -1, new sbyte[] {24, -1, -1, -1, -1, -1, 
+        new Table(6, 16, -1, new sbyte[] {24, -1, -1, -1, -1, -1,
         -1, 30, -1, 24, -1, 43, -1, -1, 30, 30});
     NxS[25] = // Shortest string "0h"
         new Table(0, 0, -1, null);
     NxS[26] = // Shortest string "0d"
-        new Table(6, 16, -1, new sbyte[] {40, -1, -1, -1, -1, -1, 
+        new Table(6, 16, -1, new sbyte[] {40, -1, -1, -1, -1, -1,
         40, 25, 40, 40, 40, 40, -1, -1, -1, 40});
     NxS[27] = // Shortest string "0b"
-        new Table(6, 16, -1, new sbyte[] {40, -1, -1, -1, -1, -1, 
+        new Table(6, 16, -1, new sbyte[] {40, -1, -1, -1, -1, -1,
         40, 25, 40, 40, 40, 40, -1, -1, -1, 40});
     NxS[28] = // Shortest string "0E2"
-        new Table(6, 16, -1, new sbyte[] {28, -1, -1, -1, -1, -1, 
+        new Table(6, 16, -1, new sbyte[] {28, -1, -1, -1, -1, -1,
         40, 25, 40, 28, 40, 40, -1, -1, -1, 40});
     NxS[29] = // Shortest string "0E+2"
-        new Table(6, 10, -1, new sbyte[] {29, -1, -1, -1, -1, -1, 
+        new Table(6, 10, -1, new sbyte[] {29, -1, -1, -1, -1, -1,
         -1, -1, -1, 29});
     NxS[30] = // Shortest string "0.h"
         new Table(0, 0, -1, null);
     NxS[31] = // Shortest string "0.E2"
-        new Table(6, 16, -1, new sbyte[] {31, -1, -1, -1, -1, -1, 
+        new Table(6, 16, -1, new sbyte[] {31, -1, -1, -1, -1, -1,
         -1, 30, -1, 31, -1, -1, -1, -1, 30, 30});
     NxS[32] = // Shortest string "st"
-        new Table(3, 19, -1, new sbyte[] {5, 5, 45, 33, -1, -1, 
+        new Table(3, 19, -1, new sbyte[] {5, 5, 45, 33, -1, -1,
         5, -1, -1, 5, 5, 5, 33, 5, 5, -1, -1, 5, 5});
     NxS[33] = // Shortest string "st2"
-        new Table(3, 19, -1, new sbyte[] {5, 5, -1, 5, -1, -1, 
+        new Table(3, 19, -1, new sbyte[] {5, 5, -1, 5, -1, -1,
         5, -1, -1, 5, 5, 5, 5, 5, 5, -1, -1, 5, 5});
     NxS[34] = // Shortest string "st(2)"
         new Table(0, 0, -1, null);
     NxS[35] = // Shortest string ""
-        new Table(15, 28, 5, new sbyte[] {12, 5, 5, 13, 14, 5, 
-        5, 15, 3, 16, 17, 18, 19, 20, 21, 1, 1, 2, 3, 4, 5, 6, 
+        new Table(15, 28, 5, new sbyte[] {12, 5, 5, 13, 14, 5,
+        5, 15, 3, 16, 17, 18, 19, 20, 21, 1, 1, 2, 3, 4, 5, 6,
         7, 8, 9, 5, 10, 11});
     NxS[36] = // Shortest string "';"
         new Table(23, 2, 36, new sbyte[] {37, 22});
@@ -302,22 +302,22 @@ public IAsmHighlighterTokenProvider AsmHighlighterTokenProvider = null; // Token
     NxS[39] = // Shortest string ""\"
         new Table(0, 1, 38, new sbyte[] {-1});
     NxS[40] = // Shortest string "0A"
-        new Table(6, 16, -1, new sbyte[] {40, -1, -1, -1, -1, -1, 
+        new Table(6, 16, -1, new sbyte[] {40, -1, -1, -1, -1, -1,
         40, 25, 40, 40, 40, 40, -1, -1, -1, 40});
     NxS[41] = // Shortest string "0E"
-        new Table(6, 16, -1, new sbyte[] {28, -1, -1, -1, -1, -1, 
+        new Table(6, 16, -1, new sbyte[] {28, -1, -1, -1, -1, -1,
         40, 25, 40, 28, 40, 40, 42, 42, -1, 40});
     NxS[42] = // Shortest string "0E+"
-        new Table(6, 10, -1, new sbyte[] {29, -1, -1, -1, -1, -1, 
+        new Table(6, 10, -1, new sbyte[] {29, -1, -1, -1, -1, -1,
         -1, -1, -1, 29});
     NxS[43] = // Shortest string "0.E"
-        new Table(6, 14, -1, new sbyte[] {31, -1, -1, -1, -1, -1, 
+        new Table(6, 14, -1, new sbyte[] {31, -1, -1, -1, -1, -1,
         -1, -1, -1, 31, -1, -1, 44, 44});
     NxS[44] = // Shortest string "0.E+"
-        new Table(6, 10, -1, new sbyte[] {31, -1, -1, -1, -1, -1, 
+        new Table(6, 10, -1, new sbyte[] {31, -1, -1, -1, -1, -1,
         -1, -1, -1, 31});
     NxS[45] = // Shortest string "st("
-        new Table(6, 10, -1, new sbyte[] {46, -1, -1, -1, -1, -1, 
+        new Table(6, 10, -1, new sbyte[] {46, -1, -1, -1, -1, -1,
         -1, -1, -1, 46});
     NxS[46] = // Shortest string "st(2"
         new Table(7, 1, -1, new sbyte[] {34});
@@ -384,7 +384,7 @@ int NextState() {
                 else if (bPos == sLen) { bPos++; return '\n'; }   // one strike, see newline
                 else return EOF;                                  // two strikes and you're out!
             }
-            
+
             public override int ReadPos { get { return bPos - 1; } }
 
             public override int Peek()
@@ -398,11 +398,11 @@ int NextState() {
                 //  "end" can be greater than sLen with the BABEL
                 //  option set.  Read returns a "virtual" EOL if
                 //  an attempt is made to read past the end of the
-                //  string buffer.  Without the guard any attempt 
-                //  to fetch yytext for a token that includes the 
+                //  string buffer.  Without the guard any attempt
+                //  to fetch yytext for a token that includes the
                 //  EOL will throw an index exception.
                 if (end > sLen) end = sLen;
-                if (end <= beg) return ""; 
+                if (end <= beg) return "";
                 else return str.Substring(beg, end - beg);
             }
 
@@ -423,9 +423,9 @@ int NextState() {
             public StreamBuff(Stream str) { this.bStrm = new BufferedStream(str); }
 
             public override int Read() {
-                return bStrm.ReadByte(); 
+                return bStrm.ReadByte();
             }
-            
+
             public override int ReadPos {
                 get { return (int)bStrm.Position - delta; }
             }
@@ -461,15 +461,15 @@ int NextState() {
 
         /// <summary>
         /// This is the Buffer for UTF8 files.
-        /// It attempts to read the encoding preamble, which for 
-        /// this encoding should be unicode point \uFEFF which is 
+        /// It attempts to read the encoding preamble, which for
+        /// this encoding should be unicode point \uFEFF which is
         /// encoded as EF BB BF
         /// </summary>
         public class TextBuff : ScanBuff
         {
             protected BufferedStream bStrm;   // input buffer
             protected int delta = 1;
-            
+
             private Exception BadUTF8()
             { return new Exception(String.Format("BadUTF8 Character")); }
 
@@ -491,7 +491,7 @@ int NextState() {
                     return new BigEndTextBuff(strm);
                 if (b0 == 0xff && b1 == 0xfe)
                     return new LittleEndTextBuff(strm);
-                
+
                 int b2 = strm.ReadByte();
                 if (b0 == 0xef && b1 == 0xbb && b2 == 0xbf)
                     return new TextBuff(strm);
@@ -503,7 +503,7 @@ int NextState() {
                 return new TextBuff(strm);
             }
 
-            protected TextBuff(Stream str) { 
+            protected TextBuff(Stream str) {
                 this.bStrm = new BufferedStream(str);
             }
 
@@ -588,7 +588,7 @@ int NextState() {
         /// </summary>
         public sealed class BigEndTextBuff : TextBuff
         {
-            internal BigEndTextBuff(Stream str) : base(str) { } // 
+            internal BigEndTextBuff(Stream str) : base(str) { } //
 
             public override int Read()
             {
@@ -597,7 +597,7 @@ int NextState() {
                 return (ch0 << 8) + ch1;
             }
         }
-        
+
         // ====================== Nested class ==========================
         /// <summary>
         /// This is the Buffer for Little-endian UTF16 files.
@@ -613,7 +613,7 @@ int NextState() {
                 return (ch1 << 8) + ch0;
             }
         }
-        
+
         // =================== End Nested classes =======================
 
         public Scanner(Stream file) {
@@ -627,10 +627,10 @@ int NextState() {
 
         void GetChr()
         {
-            if (chr == '\n') 
-            { 
-                lineStartNum = cNum + 1; 
-                lNum++; 
+            if (chr == '\n')
+            {
+                lineStartNum = cNum + 1;
+                lNum++;
             }
             chr = buffer.Read();
             cNum++;
@@ -643,7 +643,7 @@ int NextState() {
             tokLin = lNum;
             tokCol = cNum - lineStartNum;
         }
-        
+
         void MarkEnd()
         {
             tokTxt = null;
@@ -652,7 +652,7 @@ int NextState() {
             tokELin = lNum;
             tokECol = cNum - lineStartNum;
         }
- 
+
         // ================ StringBuffer Initialization ===================
 
         public void SetSource(string source, int offset)
@@ -663,7 +663,7 @@ int NextState() {
             this.chr = '\n'; // to initialize yyline, yycol and lineStart
             GetChr();
         }
-        
+
         public int GetNext(ref int state, out int start, out int end)
         {
             Tokens next;
@@ -687,7 +687,7 @@ int NextState() {
             do { next = Scan(); } while (next >= parserMax);
             return next;
         }
-        
+
         int yyleng { get { return tokLen; } }
         int yypos { get { return tokPos; } }
         int yyline { get { return tokLin; } }
@@ -695,15 +695,15 @@ int NextState() {
 
         public string yytext
         {
-            get 
+            get
             {
-                if (tokTxt == null) 
+                if (tokTxt == null)
                     tokTxt = buffer.GetString(tokPos, tokEPos);
                 return tokTxt;
             }
         }
 
-        void yyless(int n) { 
+        void yyless(int n) {
             buffer.Pos = tokPos;
             cNum = tokNum;
             for (int i = 0; i <= n; i++) GetChr();
@@ -717,7 +717,7 @@ int NextState() {
 
         internal int YY_START {
             get { return CurrentSc; }
-            set { CurrentSc = value; } 
+            set { CurrentSc = value; }
         }
 
         // ============== The main tokenizer code =================
@@ -726,7 +726,7 @@ int NextState() {
         {
                 for (; ; )
                 {
-                    int next;              // next state to enter                   
+                    int next;              // next state to enter
 #if BACKUP
                     bool inAccept = false; // inAccept ==> current state is an accept state
                     Result rslt = Result.noMatch;
@@ -741,7 +741,7 @@ int NextState() {
                             if (lineStartNum == cNum) {
                                 int anchor = anchorState[CurrentSc];
                                 if (NextState(anchor) != state) {
-                                    state = anchor; 
+                                    state = anchor;
                                     break;
                                 }
                             }
@@ -749,11 +749,11 @@ int NextState() {
                     }
 #else // !LEFTANCHORS
                     state = currentStart;
-                    while (NextState() == state) 
+                    while (NextState() == state)
                         GetChr(); // skip "idle" transitions
 #endif // LEFTANCHORS
                     MarkToken();
-                    
+
                     while ((next = NextState()) != currentStart)
                         if (inAccept && next > maxAccept) // need to prepare backup data
                         {
@@ -791,7 +791,7 @@ int NextState() {
                     }
 #else // !LEFTANCHORS
                     state = currentStart;
-                    while (NextState() == state) 
+                    while (NextState() == state)
                         GetChr(); // skip "idle" transitions
 #endif // LEFTANCHORS
                     MarkToken();
@@ -802,7 +802,7 @@ int NextState() {
                         GetChr();
                     }
 #endif // BACKUP
-                    if (state > maxAccept) 
+                    if (state > maxAccept)
                         state = currentStart;
                     else
                     {
@@ -928,7 +928,7 @@ return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);
                     SaveStateAndPos(ctx);
                 state = next;
                 if (state == eofNum) return Result.accept;
-                GetChr(); 
+                GetChr();
                 inAccept = (state <= maxAccept);
             }
             if (inAccept) return Result.accept; else return Result.noMatch;
@@ -958,16 +958,16 @@ return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);
         internal void BEGIN(int next)
         { CurrentSc = next; }
 
-#if STACK        
+#if STACK
         internal void yy_clear_stack() { scStack.Clear(); }
         internal int yy_top_state() { return scStack.Peek(); }
-        
+
         internal void yy_push_state(int state)
         {
             scStack.Push(CurrentSc);
             CurrentSc = state;
         }
-        
+
         internal void yy_pop_state()
         {
             // Protect against input errors that pop too far ...
@@ -979,6 +979,6 @@ return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);
  #endif // STACK
 
         internal void ECHO() { Console.Out.Write(yytext); }
-        
+
     } // end class Scanner
 } // end namespace
