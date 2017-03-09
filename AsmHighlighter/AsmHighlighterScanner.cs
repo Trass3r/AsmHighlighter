@@ -23,7 +23,7 @@ using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace AsmHighlighter
 {
-    public class AsmHighlighterScanner : IScanner
+    public sealed class AsmHighlighterScanner : IScanner
     {
         private Scanner lex;
 

@@ -19,7 +19,7 @@ using AsmHighlighter.Lexer;
 
 namespace AsmHighlighter
 {
-    public class MAsmHighlighterTokenProvider : IAsmHighlighterTokenProvider
+    public sealed class MAsmHighlighterTokenProvider : IAsmHighlighterTokenProvider
     {
         private static EnumMap<AsmHighlighterToken> map;
 

@@ -21,7 +21,7 @@ using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace AsmHighlighter
 {
-    public class AsmHighlighterSource : Source
+    public sealed class AsmHighlighterSource : Source
     {
         public AsmHighlighterSource(LanguageService service, IVsTextLines textLines, Colorizer colorizer) : base(service, textLines, colorizer)
         {

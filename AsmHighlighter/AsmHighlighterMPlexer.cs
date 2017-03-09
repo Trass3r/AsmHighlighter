@@ -354,7 +354,7 @@ int NextState() {
 #if BACKUP
         // ====================== Nested class ==========================
 
-        internal class Context // class used for automaton backup.
+        internal sealed class Context // class used for automaton backup.
         {
             public int bPos;
             public int cNum;

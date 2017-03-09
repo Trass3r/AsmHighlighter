@@ -22,7 +22,7 @@ using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace AsmHighlighter
 {
-    public class AsmHighlighterColorableItem : ColorableItem
+    public sealed class AsmHighlighterColorableItem : ColorableItem
     {
         public AsmHighlighterColorableItem(string name, COLORINDEX foreColor, COLORINDEX backColor)
             : base(name, name, foreColor, backColor, Color.Red, Color.Empty, FONTFLAGS.FF_DEFAULT)

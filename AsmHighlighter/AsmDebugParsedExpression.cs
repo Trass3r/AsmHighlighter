@@ -24,7 +24,7 @@ using Constants=Microsoft.VisualStudio.Debugger.Interop.Constants;
 namespace AsmHighlighter
 {
 
-    public class AsmDebugParsedExpression : IDebugParsedExpression
+    public sealed class AsmDebugParsedExpression : IDebugParsedExpression
     {
         private string _name;
         private DTE vs;
@@ -46,7 +46,7 @@ namespace AsmHighlighter
         #endregion
     }
 
-    public class AsmDebugProperty : IDebugProperty2
+    public sealed class AsmDebugProperty : IDebugProperty2
     {
         private string _expression;
         private DTE vs;

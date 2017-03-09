@@ -27,7 +27,7 @@ using Microsoft.VisualStudio.TextManager.Interop;
 namespace AsmHighlighter
 {
     [Guid(GuidList.guidAsmHighlighterLanguageServiceString)]
-    public class AsmHighlighterLanguageService : LanguageService
+    public sealed class AsmHighlighterLanguageService : LanguageService
     {
         private ColorableItem[] m_colorableItems;
 
@@ -304,7 +304,7 @@ namespace AsmHighlighter
             return result;
         }
 
-        internal class TestAuthoringScope : AuthoringScope
+        private sealed class TestAuthoringScope : AuthoringScope
         {
             private AsmHighlighterSource source;
             private AsmHighlighterLanguageService langService;
