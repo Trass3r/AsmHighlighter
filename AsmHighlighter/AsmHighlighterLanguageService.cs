@@ -26,6 +26,22 @@ using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace AsmHighlighter
 {
+    /// <see>TokenColor</see>
+    public enum AsmTokenColor
+    {
+        Text = 0,
+        Keyword = 1,
+        Comment = 2,
+        Identifier = 3,
+        String = 4,
+        Number = 5,
+
+        AsmRegister,
+        AsmFpuInstruction,
+        AsmDirective,
+        AsmSimdInstruction
+    }
+
     [Guid(GuidList.guidAsmHighlighterLanguageServiceString)]
     public sealed class AsmHighlighterLanguageService : LanguageService
     {
@@ -38,40 +54,24 @@ namespace AsmHighlighter
         {
             m_colorableItems = new ColorableItem[]
             {
-				// The first 6 items in this list MUST be these default items.
-				new AsmHighlighterColorableItem("Keyword", COLORINDEX.CI_BLUE, COLORINDEX.CI_USERTEXT_BK),
-				new AsmHighlighterColorableItem("Comment", COLORINDEX.CI_DARKGREEN, COLORINDEX.CI_USERTEXT_BK),
-				new AsmHighlighterColorableItem("Identifier", COLORINDEX.CI_USERTEXT_FG, COLORINDEX.CI_USERTEXT_BK),
-				new AsmHighlighterColorableItem("String", COLORINDEX.CI_MAROON, COLORINDEX.CI_USERTEXT_BK),
-				new AsmHighlighterColorableItem("Number", COLORINDEX.CI_USERTEXT_FG, COLORINDEX.CI_USERTEXT_BK),
-//				new AsmHighlighterColorableItem("Text", COLORINDEX.CI_USERTEXT_FG, COLORINDEX.CI_USERTEXT_BK),
+                // the first 6 items in this list MUST be these default items
+                // 0th element "Text" is default and not retrieved by VS
+                new AsmHighlighterColorableItem("Keyword", COLORINDEX.CI_BLUE, COLORINDEX.CI_USERTEXT_BK),
+                new AsmHighlighterColorableItem("Comment", COLORINDEX.CI_DARKGREEN, COLORINDEX.CI_USERTEXT_BK),
+                new AsmHighlighterColorableItem("Identifier", COLORINDEX.CI_USERTEXT_FG, COLORINDEX.CI_USERTEXT_BK),
+                new AsmHighlighterColorableItem("String", COLORINDEX.CI_MAROON, COLORINDEX.CI_USERTEXT_BK),
+                new AsmHighlighterColorableItem("Number", COLORINDEX.CI_USERTEXT_FG, COLORINDEX.CI_USERTEXT_BK),
 
-				// 6..
-//				new AsmHighlighterColorableItem("ASM Instruction", COLORINDEX.CI_BLUE, COLORINDEX.CI_USERTEXT_BK),
-//				new AsmHighlighterColorableItem("ASM Comment", COLORINDEX.CI_DARKGREEN, COLORINDEX.CI_USERTEXT_BK),
-//				new AsmHighlighterColorableItem("ASM Identifier", COLORINDEX.CI_SYSPLAINTEXT_FG, COLORINDEX.CI_USERTEXT_BK),
-//				new AsmHighlighterColorableItem("ASM String", COLORINDEX.CI_RED, COLORINDEX.CI_USERTEXT_BK),
-//				new AsmHighlighterColorableItem("ASM Number", COLORINDEX.CI_DARKBLUE, COLORINDEX.CI_USERTEXT_BK),
-				new AsmHighlighterColorableItem("ASM Register", COLORINDEX.CI_MAROON, COLORINDEX.CI_USERTEXT_BK, FONTFLAGS.FF_BOLD),
-				new AsmHighlighterColorableItem("ASM FpuInstruction", COLORINDEX.CI_AQUAMARINE, COLORINDEX.CI_USERTEXT_BK),
-				new AsmHighlighterColorableItem("ASM Directive", COLORINDEX.CI_PURPLE, COLORINDEX.CI_USERTEXT_BK),
-				new AsmHighlighterColorableItem("ASM SimdInstruction", COLORINDEX.CI_AQUAMARINE, COLORINDEX.CI_USERTEXT_BK, FONTFLAGS.FF_BOLD)
-			};
+                new AsmHighlighterColorableItem("ASM Register", COLORINDEX.CI_MAROON, COLORINDEX.CI_USERTEXT_BK, FONTFLAGS.FF_BOLD),
+                new AsmHighlighterColorableItem("ASM FpuInstruction", COLORINDEX.CI_AQUAMARINE, COLORINDEX.CI_USERTEXT_BK),
+                new AsmHighlighterColorableItem("ASM Directive", COLORINDEX.CI_PURPLE, COLORINDEX.CI_USERTEXT_BK),
+                new AsmHighlighterColorableItem("ASM SimdInstruction", COLORINDEX.CI_AQUAMARINE, COLORINDEX.CI_USERTEXT_BK, FONTFLAGS.FF_BOLD)
+            };
 
             vs = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as DTE;
         }
 
-        public bool IsDebugging()
-        {
-            bool isDebugging = false;
-            Debugger debugger = vs.Debugger;
-            if (debugger != null)
-            {
-                isDebugging = debugger.CurrentMode != dbgDebugMode.dbgDesignMode;
-            }
-            return isDebugging;
-        }
-
+        // must not include implicit index 0 = "Text"
         public override int GetItemCount(out int count)
         {
             count = m_colorableItems.Length;
@@ -263,7 +263,7 @@ namespace AsmHighlighter
                         // If in debugging mode, display the value
                         // (This is a workaround instead of going through the Debugger.ExpressionEvaluator long way...)
                         // TODO: ExpressionEvaluator is not working, this is a workaround to display values
-                        if (IsDebugging() && (((token & AsmHighlighterToken.IS_REGISTER) != 0) || token == AsmHighlighterToken.IDENTIFIER))
+                        if (IsDebugging && (((token & AsmHighlighterToken.IS_REGISTER) != 0) || token == AsmHighlighterToken.IDENTIFIER))
                         {
 
                             Expression expression = vs.Debugger.GetExpression(tipText, true, 1000);

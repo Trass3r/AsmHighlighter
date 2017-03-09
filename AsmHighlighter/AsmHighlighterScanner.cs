@@ -89,20 +89,20 @@ namespace AsmHighlighter
 			switch (token)
 			{
 				case AsmHighlighterToken.INSTRUCTION:
-					tokenInfo.Color = TokenColor.Keyword;
+					tokenInfo.Color = (TokenColor)AsmTokenColor.Keyword;
 					tokenInfo.Type = TokenType.Keyword;
 					break;
 				case AsmHighlighterToken.COMMENT_LINE:
-					tokenInfo.Color = TokenColor.Comment;
+					tokenInfo.Color = (TokenColor)AsmTokenColor.Comment;
 					tokenInfo.Type = TokenType.LineComment;
 					break;
 				case AsmHighlighterToken.NUMBER:
 				case AsmHighlighterToken.FLOAT:
-					tokenInfo.Color = TokenColor.Number;
+					tokenInfo.Color = (TokenColor)AsmTokenColor.Number;
 					tokenInfo.Type = TokenType.Literal;
 					break;
 				case AsmHighlighterToken.STRING_LITERAL:
-					tokenInfo.Color = TokenColor.String;
+					tokenInfo.Color = (TokenColor)AsmTokenColor.String;
 					tokenInfo.Type = TokenType.String;
 					break;
 				case AsmHighlighterToken.REGISTER:
@@ -110,23 +110,22 @@ namespace AsmHighlighter
 				case AsmHighlighterToken.REGISTER_MMXSSE:
 				case AsmHighlighterToken.REGISTER_AVX:
 				case AsmHighlighterToken.REGISTER_AVX512:
-					// hugly. TODO generate a AsmHighlighterTokenColor to keep tracks of 6-7-8 TokenColors
-					tokenInfo.Color = (TokenColor)6;
+					tokenInfo.Color = (TokenColor)AsmTokenColor.AsmRegister;
 					tokenInfo.Type = TokenType.Identifier;
 					break;
 				case AsmHighlighterToken.FPUPROCESSOR:
-					tokenInfo.Color = (TokenColor)7;
+					tokenInfo.Color = (TokenColor)AsmTokenColor.AsmFpuInstruction;
 					tokenInfo.Type = TokenType.Identifier;
 					break;
 				case AsmHighlighterToken.DIRECTIVE:
-					tokenInfo.Color = (TokenColor)8;
+					tokenInfo.Color = (TokenColor)AsmTokenColor.AsmDirective;
 					tokenInfo.Type = TokenType.Keyword;
 					break;
 				case AsmHighlighterToken.SIMDPROCESSOR:
 				case AsmHighlighterToken.SSE4:
 				case AsmHighlighterToken.AVX2:
 				case AsmHighlighterToken.FMA:
-					tokenInfo.Color = (TokenColor)9;
+					tokenInfo.Color = (TokenColor)AsmTokenColor.AsmSimdInstruction;
 					tokenInfo.Type = TokenType.Keyword;
 					break;
 				default:
@@ -136,5 +135,5 @@ namespace AsmHighlighter
 			}
 			return true;
 		}
-    }
+	}
 }
