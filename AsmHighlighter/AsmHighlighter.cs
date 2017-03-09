@@ -39,13 +39,6 @@ namespace AsmHighlighter
     // This attribute tells the registration utility (regpkg.exe) that this class needs
     // to be registered as package.
     [PackageRegistration(UseManagedResourcesOnly = true)]
-    // A Visual Studio component can be registered under different regitry roots; for instance
-    // when you debug your package you want to register it in the experimental hive. This
-    // attribute specifies the registry root to use if no one is provided to regpkg.exe with
-    // the /root switch.
-
-
-    [DefaultRegistryRoot("Software\\Microsoft\\VisualStudio\\12.0")]
 
     //[InstalledProductRegistration(true, null, null, null)]
     // In order be loaded inside Visual Studio in a machine that has not the VS SDK installed,
@@ -94,20 +87,23 @@ namespace AsmHighlighter
             Trace.WriteLine (string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", this.ToString()));
             base.Initialize();
 
-            // Proffer the service.
+#if DEBUG
+			var mgr = GetService(typeof(SVsFontAndColorCacheManager)) as IVsFontAndColorCacheManager;
+			mgr.ClearAllCaches();
+#endif
+
+			// Proffer the service.
+			var serviceContainer = this as IServiceContainer;
 #if true
-            IServiceContainer serviceContainer = this as IServiceContainer;
-            AsmHighlighterLanguageService langService = new AsmHighlighterLanguageService();
+			var langService = new AsmHighlighterLanguageService();
             langService.SetSite(this);
-            serviceContainer.AddService(typeof(AsmHighlighterLanguageService),
-                                        langService,
-                                        true);
-        }
+            serviceContainer.AddService(typeof(AsmHighlighterLanguageService), langService, true);
+		}
 #else
 
 			// Proffer language service on demand
 			ServiceCreatorCallback callback = new ServiceCreatorCallback(CreateLanguageService);
-			((IServiceContainer)this).AddService(typeof(AsmHighlighterLanguageService), callback, true);
+			serviceContainer.AddService(typeof(AsmHighlighterLanguageService), callback, true);
         }
 		private object CreateLanguageService(IServiceContainer container, Type serviceType)
 		{
