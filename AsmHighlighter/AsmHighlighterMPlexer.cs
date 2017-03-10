@@ -105,8 +105,8 @@ namespace AsmHighlighter.Lexer
 
         enum Result {accept, noMatch, contextFound};
 
-        const int maxAccept = 34;
-        const int initial = 35;
+        const int maxAccept = 41;
+        const int initial = 42;
         const int eofNum = 0;
         const int goStart = -1;
         const int INITIAL = 0;
@@ -175,24 +175,24 @@ public IAsmHighlighterTokenProvider AsmHighlighterTokenProvider = null; // Token
         }
     };
 
-    static int[] startState = {35, 0};
+    static int[] startState = {42, 0};
 
 #region CharacterMap
     //
-    // There are 31 equivalence classes
+    // There are 34 equivalence classes
     // There are 2 character sequence regions
     // There are 1 tables, 125 entries
     // There are 1 runs, 0 singletons
     //
     static sbyte[] map0 = new sbyte[125] {
-/* \0     */ 2, 2, 2, 2, 2, 2, 2, 2, 2, 30, 0, 30, 30, 30, 2, 2,
+/* \0     */ 2, 2, 2, 2, 2, 2, 2, 2, 2, 33, 0, 33, 33, 33, 2, 2,
 /* \020   */ 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
-/* \040   */ 30, 2, 22, 2, 2, 11, 28, 24, 5, 7, 2, 18, 25, 19, 8, 2,
-/* 0      */ 15, 15, 6, 6, 6, 6, 6, 6, 6, 6, 2, 1, 2, 2, 2, 2,
-/* @      */ 10, 12, 12, 12, 12, 17, 21, 9, 20, 9, 9, 9, 9, 9, 9, 9,
-/* P      */ 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 26, 23, 27, 2, 9,
-/* `      */ 2, 12, 16, 12, 14, 17, 21, 9, 13, 9, 9, 9, 9, 9, 9, 9,
-/* p      */ 9, 9, 9, 3, 4, 9, 9, 9, 9, 9, 9, 2, 29 };
+/* \040   */ 33, 2, 25, 2, 2, 11, 31, 27, 5, 7, 2, 22, 28, 23, 8, 2,
+/* 0      */ 12, 14, 16, 16, 16, 16, 16, 16, 6, 6, 2, 1, 2, 2, 2, 2,
+/* @      */ 10, 19, 13, 19, 17, 21, 24, 9, 20, 9, 9, 9, 9, 9, 9, 15,
+/* P      */ 9, 9, 9, 9, 9, 9, 9, 9, 18, 9, 9, 29, 26, 30, 2, 9,
+/* `      */ 2, 19, 13, 19, 17, 21, 24, 9, 20, 9, 9, 9, 9, 9, 9, 15,
+/* p      */ 9, 9, 9, 3, 4, 9, 9, 9, 18, 9, 9, 2, 32 };
 
     sbyte Map(int chr)
     { // '\0' <= chr <= '\uFFFF'
@@ -201,7 +201,7 @@ public IAsmHighlighterTokenProvider AsmHighlighterTokenProvider = null; // Token
     }
 #endregion
 
-    static Table[] NxS = new Table[47];
+    static Table[] NxS = new Table[55];
 
     static Scanner() {
     NxS[0] = // Shortest string ""
@@ -213,114 +213,136 @@ public IAsmHighlighterTokenProvider AsmHighlighterTokenProvider = null; // Token
     NxS[3] = // Shortest string "\0"
         new Table(0, 0, -1, null);
     NxS[4] = // Shortest string "s"
-        new Table(3, 19, -1, new sbyte[] {5, 32, -1, 5, -1, -1,
-        5, -1, -1, 5, 5, 5, 5, 5, 5, -1, -1, 5, 5});
+        new Table(3, 22, -1, new sbyte[] {5, 39, -1, 5, -1, -1,
+        5, -1, -1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, -1, -1, 5});
     NxS[5] = // Shortest string "t"
-        new Table(3, 19, -1, new sbyte[] {5, 5, -1, 5, -1, -1,
-        5, -1, -1, 5, 5, 5, 5, 5, 5, -1, -1, 5, 5});
+        new Table(3, 22, -1, new sbyte[] {5, 5, -1, 5, -1, -1,
+        5, -1, -1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, -1, -1, 5});
     NxS[6] = // Shortest string "("
         new Table(0, 0, -1, null);
-    NxS[7] = // Shortest string "2"
-        new Table(6, 16, -1, new sbyte[] {7, -1, 24, -1, -1, -1,
-        40, 25, 26, 7, 40, 41, -1, -1, -1, 40});
+    NxS[7] = // Shortest string "8"
+        new Table(6, 19, -1, new sbyte[] {7, -1, 26, -1, -1, -1,
+        7, 47, 7, -1, 7, 28, -1, 47, 29, 48, -1, -1, 47});
     NxS[8] = // Shortest string ")"
         new Table(0, 0, -1, null);
     NxS[9] = // Shortest string "."
-        new Table(3, 19, -1, new sbyte[] {9, 9, -1, 9, -1, -1,
-        9, -1, -1, 9, 9, 9, 9, 9, 9, -1, -1, 9, 9});
+        new Table(3, 22, -1, new sbyte[] {9, 9, -1, 9, -1, -1,
+        9, -1, -1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, -1, -1, 9});
     NxS[10] = // Shortest string "@"
-        new Table(3, 19, -1, new sbyte[] {10, 10, -1, 10, -1, -1,
-        10, -1, -1, 10, 10, 10, 10, 10, 10, -1, -1, 10, 10});
+        new Table(3, 22, -1, new sbyte[] {10, 10, -1, 10, -1, -1,
+        10, -1, -1, 10, 10, 10, 10, 10, 10, 10, 10, 10, 10, -1, -1, 10});
     NxS[11] = // Shortest string "%"
-        new Table(3, 19, -1, new sbyte[] {11, 11, -1, 11, -1, -1,
-        11, -1, -1, 11, 11, 11, 11, 11, 11, -1, -1, 11, 11});
+        new Table(3, 22, -1, new sbyte[] {11, 11, -1, 11, -1, -1,
+        11, -1, -1, 11, 11, 11, 11, 11, 11, 11, 11, 11, 11, -1, -1, 11});
     NxS[12] = // Shortest string "0"
-        new Table(6, 16, -1, new sbyte[] {7, -1, 24, -1, -1, -1,
-        40, 25, 26, 12, 27, 41, -1, -1, -1, 40});
-    NxS[13] = // Shortest string "+"
+        new Table(6, 19, -1, new sbyte[] {7, -1, 26, -1, -1, -1,
+        13, 35, 13, 36, 14, 37, 52, 47, 29, 48, -1, -1, 47});
+    NxS[13] = // Shortest string "1"
+        new Table(6, 19, -1, new sbyte[] {7, -1, 26, -1, -1, -1,
+        13, 34, 13, 27, 14, 28, -1, 47, 29, 48, -1, -1, 47});
+    NxS[14] = // Shortest string "2"
+        new Table(6, 19, -1, new sbyte[] {7, -1, 26, -1, -1, -1,
+        14, 47, 14, 27, 14, 28, -1, 47, 29, 48, -1, -1, 47});
+    NxS[15] = // Shortest string "+"
         new Table(0, 0, -1, null);
-    NxS[14] = // Shortest string "-"
+    NxS[16] = // Shortest string "-"
         new Table(0, 0, -1, null);
-    NxS[15] = // Shortest string """
-        new Table(22, 2, 38, new sbyte[] {23, 39});
-    NxS[16] = // Shortest string "'"
-        new Table(23, 2, 36, new sbyte[] {37, 22});
-    NxS[17] = // Shortest string ","
+    NxS[17] = // Shortest string """
+        new Table(25, 2, 45, new sbyte[] {25, 46});
+    NxS[18] = // Shortest string "'"
+        new Table(26, 2, 43, new sbyte[] {44, 24});
+    NxS[19] = // Shortest string ","
         new Table(0, 0, -1, null);
-    NxS[18] = // Shortest string "["
+    NxS[20] = // Shortest string "["
         new Table(0, 0, -1, null);
-    NxS[19] = // Shortest string "]"
+    NxS[21] = // Shortest string "]"
         new Table(0, 0, -1, null);
-    NxS[20] = // Shortest string "&"
+    NxS[22] = // Shortest string "&"
         new Table(0, 0, -1, null);
-    NxS[21] = // Shortest string "|"
+    NxS[23] = // Shortest string "|"
         new Table(0, 0, -1, null);
-    NxS[22] = // Shortest string "''"
+    NxS[24] = // Shortest string "''"
         new Table(0, 0, -1, null);
-    NxS[23] = // Shortest string """"
+    NxS[25] = // Shortest string """"
         new Table(0, 0, -1, null);
-    NxS[24] = // Shortest string "0."
-        new Table(6, 16, -1, new sbyte[] {24, -1, -1, -1, -1, -1,
-        -1, 30, -1, 24, -1, 43, -1, -1, 30, 30});
-    NxS[25] = // Shortest string "0h"
+    NxS[26] = // Shortest string "2."
+        new Table(6, 19, -1, new sbyte[] {26, -1, -1, -1, -1, -1,
+        26, -1, 26, -1, 26, -1, -1, -1, 32, 50, -1, -1, 32});
+    NxS[27] = // Shortest string "2O"
         new Table(0, 0, -1, null);
-    NxS[26] = // Shortest string "0d"
-        new Table(6, 16, -1, new sbyte[] {40, -1, -1, -1, -1, -1,
-        40, 25, 40, 40, 40, 40, -1, -1, -1, 40});
-    NxS[27] = // Shortest string "0b"
-        new Table(6, 16, -1, new sbyte[] {40, -1, -1, -1, -1, -1,
-        40, 25, 40, 40, 40, 40, -1, -1, -1, 40});
-    NxS[28] = // Shortest string "0E2"
-        new Table(6, 16, -1, new sbyte[] {28, -1, -1, -1, -1, -1,
-        40, 25, 40, 28, 40, 40, -1, -1, -1, 40});
-    NxS[29] = // Shortest string "0E+2"
-        new Table(6, 10, -1, new sbyte[] {29, -1, -1, -1, -1, -1,
-        -1, -1, -1, 29});
-    NxS[30] = // Shortest string "0.h"
+    NxS[28] = // Shortest string "2D"
+        new Table(6, 19, -1, new sbyte[] {47, -1, -1, -1, -1, -1,
+        47, 47, 47, -1, 47, 47, -1, 47, 29, 47, -1, -1, 47});
+    NxS[29] = // Shortest string "2H"
         new Table(0, 0, -1, null);
-    NxS[31] = // Shortest string "0.E2"
-        new Table(6, 16, -1, new sbyte[] {31, -1, -1, -1, -1, -1,
-        -1, 30, -1, 31, -1, -1, -1, -1, 30, 30});
-    NxS[32] = // Shortest string "st"
-        new Table(3, 19, -1, new sbyte[] {5, 5, 45, 33, -1, -1,
-        5, -1, -1, 5, 5, 5, 33, 5, 5, -1, -1, 5, 5});
-    NxS[33] = // Shortest string "st2"
-        new Table(3, 19, -1, new sbyte[] {5, 5, -1, 5, -1, -1,
-        5, -1, -1, 5, 5, 5, 5, 5, 5, -1, -1, 5, 5});
-    NxS[34] = // Shortest string "st(2)"
+    NxS[30] = // Shortest string "2E8"
+        new Table(6, 19, -1, new sbyte[] {30, -1, -1, -1, -1, -1,
+        30, 47, 30, -1, 30, 47, -1, 47, 29, 47, -1, -1, 47});
+    NxS[31] = // Shortest string "2E+8"
+        new Table(6, 11, -1, new sbyte[] {31, -1, -1, -1, -1, -1,
+        31, -1, 31, -1, 31});
+    NxS[32] = // Shortest string "2.H"
         new Table(0, 0, -1, null);
-    NxS[35] = // Shortest string ""
-        new Table(15, 28, 5, new sbyte[] {12, 5, 5, 13, 14, 5,
-        5, 15, 3, 16, 17, 18, 19, 20, 21, 1, 1, 2, 3, 4, 5, 6,
-        7, 8, 9, 5, 10, 11});
-    NxS[36] = // Shortest string "';"
-        new Table(23, 2, 36, new sbyte[] {37, 22});
-    NxS[37] = // Shortest string "'\"
-        new Table(0, 1, 36, new sbyte[] {-1});
-    NxS[38] = // Shortest string "";"
-        new Table(22, 2, 38, new sbyte[] {23, 39});
-    NxS[39] = // Shortest string ""\"
-        new Table(0, 1, 38, new sbyte[] {-1});
-    NxS[40] = // Shortest string "0A"
-        new Table(6, 16, -1, new sbyte[] {40, -1, -1, -1, -1, -1,
-        40, 25, 40, 40, 40, 40, -1, -1, -1, 40});
-    NxS[41] = // Shortest string "0E"
-        new Table(6, 16, -1, new sbyte[] {28, -1, -1, -1, -1, -1,
-        40, 25, 40, 28, 40, 40, 42, 42, -1, 40});
-    NxS[42] = // Shortest string "0E+"
-        new Table(6, 10, -1, new sbyte[] {29, -1, -1, -1, -1, -1,
-        -1, -1, -1, 29});
-    NxS[43] = // Shortest string "0.E"
-        new Table(6, 14, -1, new sbyte[] {31, -1, -1, -1, -1, -1,
-        -1, -1, -1, 31, -1, -1, 44, 44});
-    NxS[44] = // Shortest string "0.E+"
-        new Table(6, 10, -1, new sbyte[] {31, -1, -1, -1, -1, -1,
-        -1, -1, -1, 31});
-    NxS[45] = // Shortest string "st("
-        new Table(6, 10, -1, new sbyte[] {46, -1, -1, -1, -1, -1,
-        -1, -1, -1, 46});
-    NxS[46] = // Shortest string "st(2"
-        new Table(7, 1, -1, new sbyte[] {34});
+    NxS[33] = // Shortest string "2.E8"
+        new Table(6, 19, -1, new sbyte[] {33, -1, -1, -1, -1, -1,
+        33, -1, 33, -1, 33, -1, -1, -1, 32, -1, -1, -1, 32});
+    NxS[34] = // Shortest string "1B"
+        new Table(6, 19, -1, new sbyte[] {47, -1, -1, -1, -1, -1,
+        47, 47, 47, -1, 47, 47, -1, 47, 29, 47, -1, -1, 47});
+    NxS[35] = // Shortest string "0B"
+        new Table(6, 19, -1, new sbyte[] {47, -1, -1, -1, -1, -1,
+        35, 47, 35, -1, 47, 47, -1, 47, 29, 47, -1, -1, 47});
+    NxS[36] = // Shortest string "0O"
+        new Table(12, 5, -1, new sbyte[] {36, -1, 36, -1, 36});
+    NxS[37] = // Shortest string "0D"
+        new Table(6, 19, -1, new sbyte[] {37, -1, -1, -1, -1, -1,
+        37, 47, 37, -1, 37, 47, -1, 47, 29, 47, -1, -1, 47});
+    NxS[38] = // Shortest string "0X8"
+        new Table(6, 19, -1, new sbyte[] {38, -1, -1, -1, -1, -1,
+        38, 38, 38, -1, 38, 38, -1, 38, -1, 38, -1, -1, 38});
+    NxS[39] = // Shortest string "st"
+        new Table(3, 22, -1, new sbyte[] {5, 5, 53, 40, -1, -1,
+        5, -1, -1, 40, 5, 40, 5, 40, 5, 5, 5, 5, 5, -1, -1, 5});
+    NxS[40] = // Shortest string "st8"
+        new Table(3, 22, -1, new sbyte[] {5, 5, -1, 5, -1, -1,
+        5, -1, -1, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, -1, -1, 5});
+    NxS[41] = // Shortest string "st(8)"
+        new Table(0, 0, -1, null);
+    NxS[42] = // Shortest string ""
+        new Table(22, 29, 5, new sbyte[] {15, 16, 5, 17, 3, 18,
+        19, 20, 21, 22, 23, 1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 5,
+        10, 11, 12, 5, 13, 5, 14});
+    NxS[43] = // Shortest string "';"
+        new Table(26, 2, 43, new sbyte[] {44, 24});
+    NxS[44] = // Shortest string "'\"
+        new Table(0, 1, 43, new sbyte[] {-1});
+    NxS[45] = // Shortest string "";"
+        new Table(25, 2, 45, new sbyte[] {25, 46});
+    NxS[46] = // Shortest string ""\"
+        new Table(0, 1, 45, new sbyte[] {-1});
+    NxS[47] = // Shortest string "2B"
+        new Table(6, 19, -1, new sbyte[] {47, -1, -1, -1, -1, -1,
+        47, 47, 47, -1, 47, 47, -1, 47, 29, 47, -1, -1, 47});
+    NxS[48] = // Shortest string "2E"
+        new Table(6, 19, -1, new sbyte[] {30, -1, -1, -1, -1, -1,
+        30, 47, 30, -1, 30, 47, -1, 47, 29, 47, 49, 49, 47});
+    NxS[49] = // Shortest string "2E+"
+        new Table(6, 11, -1, new sbyte[] {31, -1, -1, -1, -1, -1,
+        31, -1, 31, -1, 31});
+    NxS[50] = // Shortest string "2.E"
+        new Table(6, 18, -1, new sbyte[] {33, -1, -1, -1, -1, -1,
+        33, -1, 33, -1, 33, -1, -1, -1, -1, -1, 51, 51});
+    NxS[51] = // Shortest string "2.E+"
+        new Table(6, 11, -1, new sbyte[] {33, -1, -1, -1, -1, -1,
+        33, -1, 33, -1, 33});
+    NxS[52] = // Shortest string "0X"
+        new Table(6, 19, -1, new sbyte[] {38, -1, -1, -1, -1, -1,
+        38, 38, 38, -1, 38, 38, -1, 38, -1, 38, -1, -1, 38});
+    NxS[53] = // Shortest string "st("
+        new Table(6, 11, -1, new sbyte[] {54, -1, -1, -1, -1, -1,
+        54, -1, 54, -1, 54});
+    NxS[54] = // Shortest string "st(8"
+        new Table(7, 1, -1, new sbyte[] {41});
     }
 
 int NextState(int qStat) {
@@ -329,7 +351,7 @@ int NextState(int qStat) {
     else {
         int rslt;
         int idx = Map(chr) - NxS[qStat].min;
-        if (idx < 0) idx += 31;
+        if (idx < 0) idx += 34;
         if ((uint)idx >= (uint)NxS[qStat].rng) rslt = NxS[qStat].dflt;
         else rslt = NxS[qStat].nxt[idx];
         return (rslt == goStart ? currentStart : rslt);
@@ -342,7 +364,7 @@ int NextState() {
     else {
         int rslt;
         int idx = Map(chr) - NxS[state].min;
-        if (idx < 0) idx += 31;
+        if (idx < 0) idx += 34;
         if ((uint)idx >= (uint)NxS[state].rng) rslt = NxS[state].dflt;
         else rslt = NxS[state].nxt[idx];
         return (rslt == goStart ? currentStart : rslt);
@@ -820,13 +842,13 @@ int NextState() {
 return (int)AsmHighlighterToken.COMMENT_LINE;
             break;
         case 3:
-        case 15:
-        case 16:
+        case 17:
+        case 18:
 return (int)AsmHighlighterToken.UNDEFINED;
             break;
         case 4:
         case 5:
-        case 32:
+        case 39:
 return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);
             break;
         case 6:
@@ -834,6 +856,8 @@ return (int)AsmHighlighterToken.LEFT_PARENTHESIS;
             break;
         case 7:
         case 12:
+        case 13:
+        case 14:
 return (int)AsmHighlighterToken.NUMBER;
             break;
         case 8:
@@ -848,55 +872,62 @@ return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);
         case 11:
 return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);
             break;
-        case 13:
+        case 15:
 return (int)AsmHighlighterToken.OPERATOR;
             break;
-        case 14:
+        case 16:
 return (int)AsmHighlighterToken.OPERATOR;
-            break;
-        case 17:
-return (int)AsmHighlighterToken.DELIMITER;
-            break;
-        case 18:
-return (int)AsmHighlighterToken.LEFT_SQUARE_BRACKET;
             break;
         case 19:
-return (int)AsmHighlighterToken.RIGHT_SQUARE_BRACKET;
+return (int)AsmHighlighterToken.DELIMITER;
             break;
         case 20:
-return (int)AsmHighlighterToken.OPERATOR;
+return (int)AsmHighlighterToken.LEFT_SQUARE_BRACKET;
             break;
         case 21:
-return (int)AsmHighlighterToken.OPERATOR;
+return (int)AsmHighlighterToken.RIGHT_SQUARE_BRACKET;
             break;
         case 22:
-return (int)AsmHighlighterToken.STRING_LITERAL;
+return (int)AsmHighlighterToken.OPERATOR;
             break;
         case 23:
-return (int)AsmHighlighterToken.STRING_LITERAL;
+return (int)AsmHighlighterToken.OPERATOR;
             break;
         case 24:
+return (int)AsmHighlighterToken.STRING_LITERAL;
+            break;
+        case 25:
+return (int)AsmHighlighterToken.STRING_LITERAL;
+            break;
+        case 26:
+        case 32:
+        case 33:
+return (int)AsmHighlighterToken.FLOAT;
+            break;
+        case 27:
+        case 36:
+return (int)AsmHighlighterToken.NUMBER;
+            break;
+        case 28:
+        case 37:
+return (int)AsmHighlighterToken.NUMBER;
+            break;
+        case 29:
+        case 38:
+return (int)AsmHighlighterToken.NUMBER;
+            break;
         case 30:
         case 31:
 return (int)AsmHighlighterToken.FLOAT;
             break;
-        case 25:
+        case 34:
+        case 35:
 return (int)AsmHighlighterToken.NUMBER;
             break;
-        case 26:
-return (int)AsmHighlighterToken.NUMBER;
-            break;
-        case 27:
-return (int)AsmHighlighterToken.NUMBER;
-            break;
-        case 28:
-        case 29:
-return (int)AsmHighlighterToken.FLOAT;
-            break;
-        case 33:
+        case 40:
 return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);
             break;
-        case 34:
+        case 41:
 return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);
             break;
         default:

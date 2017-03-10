@@ -34,13 +34,14 @@
 /**********************************************************************************/
 
 
-binary				[0-1]
-digit				[0-9]
-alpha				[a-zA-Z_]
-exponent			[Ee]("+"|"-")?{digit}+
-floatsuffix			[fFhH]
-white_space			[ \t\v\n\f\r]
-hexdigit			[0-9a-fA-F]
+binary              [0-1]
+octal               [0-7]
+digit               [0-9]
+alpha               [a-zA-Z_]
+exponent            [Ee]("+"|"-")?{digit}+
+floatsuffix         [fFhH]
+white_space         [ \t\v\n\f\r]
+hexdigit            [0-9a-fA-F]
 ABStar       [^\*\n]*
 
 /**********************************************************************************/
@@ -55,70 +56,71 @@ ABStar       [^\*\n]*
 /************************************Comments**************************************/
 /**********************************************************************************/
 
-";"(.)*				    {return (int)AsmHighlighterToken.COMMENT_LINE;}
+";"(.)*                 {return (int)AsmHighlighterToken.COMMENT_LINE;}
 
 /**********************************************************************************/
 /***********************************Identifier*************************************/
 /**********************************************************************************/
 
 /* st(0) - st(7) registers */
-"st("{digit}")"				{return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);}
-"st"{digit}					{return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);}
+"st("{digit}")"             {return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);}
+"st"{digit}                 {return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);}
 
 /* directive */
-"."({alpha}|{digit})* 		{return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);}
-"@"({alpha}|{digit})* 		{return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);}
-"%"({alpha}|{digit})* 		{return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);}
+"."({alpha}|{digit})*       {return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);}
+"@"({alpha}|{digit})*       {return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);}
+"%"({alpha}|{digit})*       {return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);}
 
 /* identifier or keyword */
-{alpha}({alpha}|{digit})* 		{return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);}
+{alpha}({alpha}|{digit})*       {return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);}
 
 
 /**********************************************************************************/
 /*************************************Numbers**************************************/
 /**********************************************************************************/
 
-{hexdigit}+"h"				{return (int)AsmHighlighterToken.NUMBER;}
-{digit}+"d"				{return (int)AsmHighlighterToken.NUMBER;}
-{binary}+"b"			{return (int)AsmHighlighterToken.NUMBER;}
-{digit}+				{return (int)AsmHighlighterToken.NUMBER;}
+(0[bB]{binary}+|{binary}+[bB])           {return (int)AsmHighlighterToken.NUMBER;}
+(0[oO]{octal}+|{octal}+[oO])             {return (int)AsmHighlighterToken.NUMBER;}
+(0[dD]{digit}+|{digit}+[dD])             {return (int)AsmHighlighterToken.NUMBER;}
+(0[xX]{hexdigit}+|{hexdigit}+[hH])       {return (int)AsmHighlighterToken.NUMBER;}
+{digit}+                                 {return (int)AsmHighlighterToken.NUMBER;}
 
 /**********************************************************************************/
 /**************************************Float***************************************/
 /**********************************************************************************/
 
-{digit}+{exponent}			{return (int)AsmHighlighterToken.FLOAT;}
-{digit}+"."{digit}*({exponent})?({floatsuffix})?	{return (int)AsmHighlighterToken.FLOAT;}
+{digit}+{exponent}          {return (int)AsmHighlighterToken.FLOAT;}
+{digit}+"."{digit}*({exponent})?({floatsuffix})?    {return (int)AsmHighlighterToken.FLOAT;}
 
 
 /**********************************************************************************/
 /*************************************String***************************************/
 /**********************************************************************************/
 
-\"(\\.|[^\\"])*\"			{return (int)AsmHighlighterToken.STRING_LITERAL;}
-\'(\\.|[^\\'])*\'			{return (int)AsmHighlighterToken.STRING_LITERAL;}
+\"(\\.|[^\\"])*\"           {return (int)AsmHighlighterToken.STRING_LITERAL;}
+\'(\\.|[^\\'])*\'           {return (int)AsmHighlighterToken.STRING_LITERAL;}
 
 /**********************************************************************************/
 /***************************Operators And Special Signs****************************/
 /**********************************************************************************/
 
-";"					    {return (int)AsmHighlighterToken.DELIMITER;}
-","					    {return (int)AsmHighlighterToken.DELIMITER;}
-"("					    {return (int)AsmHighlighterToken.LEFT_PARENTHESIS;}
-")"					    {return (int)AsmHighlighterToken.RIGHT_PARENTHESIS;}
-"["				    	{return (int)AsmHighlighterToken.LEFT_SQUARE_BRACKET;}
-"]"					    {return (int)AsmHighlighterToken.RIGHT_SQUARE_BRACKET;}
-"."	    				{return (int)AsmHighlighterToken.OPERATOR;}
-"&"	    				{return (int)AsmHighlighterToken.OPERATOR;}
-"+"	    				{return (int)AsmHighlighterToken.OPERATOR;}
-"-"	    				{return (int)AsmHighlighterToken.OPERATOR;}
-"|"	    				{return (int)AsmHighlighterToken.OPERATOR;}
+";"                     {return (int)AsmHighlighterToken.DELIMITER;}
+","                     {return (int)AsmHighlighterToken.DELIMITER;}
+"("                     {return (int)AsmHighlighterToken.LEFT_PARENTHESIS;}
+")"                     {return (int)AsmHighlighterToken.RIGHT_PARENTHESIS;}
+"["                     {return (int)AsmHighlighterToken.LEFT_SQUARE_BRACKET;}
+"]"                     {return (int)AsmHighlighterToken.RIGHT_SQUARE_BRACKET;}
+"."                     {return (int)AsmHighlighterToken.OPERATOR;}
+"&"                     {return (int)AsmHighlighterToken.OPERATOR;}
+"+"                     {return (int)AsmHighlighterToken.OPERATOR;}
+"-"                     {return (int)AsmHighlighterToken.OPERATOR;}
+"|"                     {return (int)AsmHighlighterToken.OPERATOR;}
 
 /**********************************************************************************/
 /****************************White Space & Unrecognized****************************/
 /**********************************************************************************/
-{white_space}					{/* Ignore */}
-.					{return (int)AsmHighlighterToken.UNDEFINED;}
+{white_space}                   {/* Ignore */}
+.                   {return (int)AsmHighlighterToken.UNDEFINED;}
 
 
 /**********************************************************************************/
