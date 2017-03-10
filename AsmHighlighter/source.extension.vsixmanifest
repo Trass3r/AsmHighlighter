@@ -1,24 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Vsix xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="1.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2010">
-  <Identifier Id="AsmHighlighter.374E6EC1-2ADF-4ACC-93DF-CC84E7B26B34">
-    <Name>AsmHighlighter</Name>
-    <Author>Alexandre Mutel</Author>
-    <Version>2.0</Version>
-    <Description xml:space="preserve">AsmHighlighter is an extension to Visual Studio 2015+ that provides syntax highlighting for x86 ASM language.</Description>
-    <Locale>1033</Locale>
-    <MoreInfoUrl>http://asmhighlighter.codeplex.com</MoreInfoUrl>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+  <Metadata>
+    <Identity Id="AsmHighlighter.374E6EC1-2ADF-4ACC-93DF-CC84E7B26B34" Version="2.0.0" Language="en-US" Publisher="Andreas Hollandt" />
+    <DisplayName>AsmHighlighter</DisplayName>
+    <Description xml:space="preserve">AsmHighlighter is an extension to Visual Studio 2015+ that provides syntax highlighting for the x86 ASM language.</Description>
+    <MoreInfo>https://github.com/Trass3r/AsmHighlighter</MoreInfo>
     <License>License.rtf</License>
     <Icon>PackageIcon.ico</Icon>
     <PreviewImage>Screenshot.png</PreviewImage>
-    <SupportedProducts>
-      <VisualStudio Version="14.0">
-        <Edition>Pro</Edition>
-      </VisualStudio>
-    </SupportedProducts>
-    <SupportedFrameworkRuntimeEdition MinVersion="4.6" />
-  </Identifier>
-  <References />
-  <Content>
-    <VsPackage>|%CurrentProject%;PkgdefProjectOutputGroup|</VsPackage>
-  </Content>
-</Vsix>
+  </Metadata>
+  <Installation>
+    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0,)" />
+  </Installation>
+  <Dependencies>
+    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.6,)" />
+    <Dependency Id="Microsoft.VisualStudio.MPF.14.0" DisplayName="Visual Studio MPF 14.0" d:Source="Installed" Version="[14.0]" />
+  </Dependencies>
+  <Prerequisites>
+    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />
+    <Prerequisite Id="Microsoft.VisualStudio.Component.Debugger.JustInTime" Version="[15.0,)" DisplayName="Visual Studio core editor" />
+  </Prerequisites>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.VsPackage" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%;PkgdefProjectOutputGroup|" />
+  </Assets>
+</PackageManifest>
