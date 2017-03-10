@@ -35,6 +35,7 @@
 
 
 binary              [0-1]
+octal               [0-7]
 digit               [0-9]
 alpha               [a-zA-Z_]
 exponent            [Ee]("+"|"-")?{digit}+
@@ -78,10 +79,11 @@ ABStar       [^\*\n]*
 /*************************************Numbers**************************************/
 /**********************************************************************************/
 
-{hexdigit}+"h"          {return (int)AsmHighlighterToken.NUMBER;}
-{digit}+"d"             {return (int)AsmHighlighterToken.NUMBER;}
-{binary}+"b"            {return (int)AsmHighlighterToken.NUMBER;}
-{digit}+                {return (int)AsmHighlighterToken.NUMBER;}
+(0[bB]{binary}+|{binary}+[bB])           {return (int)AsmHighlighterToken.NUMBER;}
+(0[oO]{octal}+|{octal}+[oO])             {return (int)AsmHighlighterToken.NUMBER;}
+(0[dD]{digit}+|{digit}+[dD])             {return (int)AsmHighlighterToken.NUMBER;}
+(0[xX]{hexdigit}+|{hexdigit}+[hH])       {return (int)AsmHighlighterToken.NUMBER;}
+{digit}+                                 {return (int)AsmHighlighterToken.NUMBER;}
 
 /**********************************************************************************/
 /**************************************Float***************************************/
