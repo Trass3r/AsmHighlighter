@@ -24,7 +24,7 @@ namespace AsmHighlighter
 {
     public class AsmHighlighterScannerFactory {
         private static AsmHighlighterScanner masmScanner;
-        private static AsmHighlighterScanner nasmScanner;
+        // private static AsmHighlighterScanner nasmScanner;
         private static Dictionary<string, AsmHighlighterScanner> mapExtensionToScanner;
 
         static AsmHighlighterScannerFactory() {

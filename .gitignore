@@ -3,4 +3,5 @@ obj/
 .vs/
 *.db
 *.suo
+*.user
 _Resharper*

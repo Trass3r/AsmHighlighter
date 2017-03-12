@@ -83,7 +83,7 @@
     <Reference Include="Microsoft.VisualStudio.TextManager.Interop.8.0">
       <Private>False</Private>
     </Reference>
-    <Reference Include="Microsoft.VisualStudio.Utilities, Version=14.0.0.0">
+    <Reference Include="Microsoft.VisualStudio.Utilities">
       <Private>False</Private>
     </Reference>
     <Reference Include="PresentationFramework" />
@@ -139,7 +139,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="VSPackage.resx" />
+    <EmbeddedResource Include="VSPackage.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\fasmdll_managed\fasmdll_managed\fasmdll_managed.vcxproj">
