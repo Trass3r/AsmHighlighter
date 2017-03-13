@@ -25,7 +25,7 @@ namespace AsmHighlighter
     public sealed class AsmHighlighterColorableItem : ColorableItem
     {
         public AsmHighlighterColorableItem(string name, COLORINDEX foreColor, COLORINDEX backColor)
-            : base(name, name, foreColor, backColor, Color.Red, Color.Empty, FONTFLAGS.FF_DEFAULT)
+        : base(name, name, foreColor, backColor, Color.Empty, Color.Empty, FONTFLAGS.FF_DEFAULT)
         {
         }
 
@@ -51,7 +51,8 @@ namespace AsmHighlighter
 
         public override int GetMergingPriority(out int priority)
         {
-           priority = 0x2000;
+           // give priority to VS default colors
+           priority = 0;
            return VSConstants.S_OK;
         }
     }
