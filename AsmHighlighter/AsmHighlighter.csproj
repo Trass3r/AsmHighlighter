@@ -95,7 +95,7 @@
   <ItemGroup>
     <Compile Include="AsmDebugParsedExpression.cs" />
     <Compile Include="AsmExpressionEvaluator.cs" />
-    <Compile Include="AsmHighlighterMPlexer.cs" />
+    <Compile Include="AsmHighlighterLexer.cs" />
     <Compile Include="EnumMap.cs" />
     <Compile Include="Guids.cs" />
     <Compile Include="MAsmHighlighterTokenProvider.cs" />
