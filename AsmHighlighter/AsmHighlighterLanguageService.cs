@@ -45,7 +45,7 @@ namespace AsmHighlighter
     [Guid(GuidList.guidAsmHighlighterLanguageServiceString)]
     public sealed class AsmHighlighterLanguageService : LanguageService
     {
-        private ColorableItem[] m_colorableItems;
+        private readonly ColorableItem[] m_colorableItems;
 
         private LanguagePreferences m_preferences;
         private DTE vs;
@@ -54,7 +54,7 @@ namespace AsmHighlighter
         {
             m_colorableItems = new ColorableItem[]
             {
-                // the first 6 items in this list MUST be these default items
+                // the first 6 items in this list are the default items
                 // 0th element "Text" is default and not retrieved by VS
                 new AsmHighlighterColorableItem("Keyword", COLORINDEX.CI_BLUE, COLORINDEX.CI_USERTEXT_BK),
                 new AsmHighlighterColorableItem("Comment", COLORINDEX.CI_DARKGREEN, COLORINDEX.CI_USERTEXT_BK),
@@ -172,19 +172,15 @@ namespace AsmHighlighter
 
                     // Set Not a valid breakpoint
                     retval = VSConstants.S_FALSE;
-                    switch (token)
+					if ((token & AsmHighlighterToken.IS_INSTRUCTION) != 0)
                     {
-                        case AsmHighlighterToken.INSTRUCTION:
-                        case AsmHighlighterToken.FPUPROCESSOR:
-                        case AsmHighlighterToken.SIMDPROCESSOR:
-                            if (pCodeSpan != null)
-                            {
-                                // Breakpoint covers the whole line (including comment)
-                                pCodeSpan[0].iEndIndex = maxColumn;
-                            }
-                            // Set valid breakpoint
-                            retval = VSConstants.S_OK;
-                            break;
+                        if (pCodeSpan != null)
+                        {
+                            // Breakpoint covers the whole line (including comment)
+                            pCodeSpan[0].iEndIndex = maxColumn;
+                        }
+                        // Set valid breakpoint
+                        retval = VSConstants.S_OK;
                     }
                 }
             }
@@ -207,102 +203,101 @@ namespace AsmHighlighter
             //}
         }
 
-        public int ComputeDataTipOnContext(IVsTextLines textLines, int line, int col, ref TextSpan span, out string tipText)
-        {
-            int result = VSConstants.E_NOTIMPL;
+		public int ComputeDataTipOnContext(IVsTextLines textLines, int line, int col, ref TextSpan span, out string tipText)
+		{
+			int result = VSConstants.E_NOTIMPL;
 
-            tipText = "";
-            span.iStartLine = line;
-            span.iStartIndex = col;
-            span.iEndLine = line;
-            span.iEndIndex = col;
+			tipText = "";
+			span.iStartLine = line;
+			span.iStartIndex = col;
+			span.iEndLine = line;
+			span.iEndIndex = col;
 
-            if (textLines != null)
-            {
-                // Parse tokens and search for the token below the selection
-                AsmHighlighterScanner scanner = AsmHighlighterScannerFactory.GetScanner(textLines);
-                string lineOfCode;
-                List<TokenInfo> tokenInfoList = scanner.ParseLine(textLines, line, int.MaxValue, out lineOfCode);
+			if (textLines == null)
+				return result;
 
-                TokenInfo selectedTokenInfo = null;
-                foreach (TokenInfo info in tokenInfoList)
-                {
-                    if (col >= info.StartIndex && col <= info.EndIndex)
-                    {
-                        selectedTokenInfo = info;
-                        break;
-                    }
-                }
+			// Parse tokens and search for the token below the selection
+			AsmHighlighterScanner scanner = AsmHighlighterScannerFactory.GetScanner(textLines);
+			string lineOfCode;
+			List<TokenInfo> tokenInfoList = scanner.ParseLine(textLines, line, int.MaxValue, out lineOfCode);
 
-                // If a valid token was found, handle it
-                if (selectedTokenInfo != null)
-                {
-                    AsmHighlighterToken token = (AsmHighlighterToken)selectedTokenInfo.Token;
+			TokenInfo selectedTokenInfo = null;
+			foreach (TokenInfo info in tokenInfoList)
+			{
+				if (col >= info.StartIndex && col <= info.EndIndex)
+				{
+					selectedTokenInfo = info;
+					break;
+				}
+			}
 
-                    // Display only tip for REGISTER or IDENTIFIER
-                    if ((token & AsmHighlighterToken.IS_REGISTER) != 0 || (token & AsmHighlighterToken.IS_NUMBER) != 0 || token == AsmHighlighterToken.IDENTIFIER)
-                    {
-                        result = VSConstants.S_OK;
+			// If a valid token was found, handle it
+			if (selectedTokenInfo == null)
+				return result;
 
-                        tipText = lineOfCode.Substring(selectedTokenInfo.StartIndex,
-                                                         selectedTokenInfo.EndIndex - selectedTokenInfo.StartIndex + 1);
+			AsmHighlighterToken token = (AsmHighlighterToken)selectedTokenInfo.Token;
 
-                        if ((token & AsmHighlighterToken.IS_REGISTER)!=0)
-                        {
-                            tipText = tipText.ToLower();
-                            if (token == AsmHighlighterToken.REGISTER_FPU)
-                            {
-                                tipText = tipText.Replace("(", "");
-                                tipText = tipText.Replace(")", "");
-                            }
-                        }
+			// Display only tip for INSTRUCTION, REGISTER or IDENTIFIER
+			if ((token & (AsmHighlighterToken.IS_INSTRUCTION | AsmHighlighterToken.IS_REGISTER | AsmHighlighterToken.IS_NUMBER)) == 0 &&
+				token != AsmHighlighterToken.IDENTIFIER)
+				return result;
 
-                        span.iStartIndex = selectedTokenInfo.StartIndex;
-                        span.iEndIndex = selectedTokenInfo.EndIndex + 1;
+			result = VSConstants.S_OK;
 
-                        // If in debugging mode, display the value
-                        // (This is a workaround instead of going through the Debugger.ExpressionEvaluator long way...)
-                        // TODO: ExpressionEvaluator is not working, this is a workaround to display values
-                        if (IsDebugging && (((token & AsmHighlighterToken.IS_REGISTER) != 0) || token == AsmHighlighterToken.IDENTIFIER))
-                        {
+			tipText = token.ToString();
 
-                            Expression expression = vs.Debugger.GetExpression(tipText, true, 1000);
-                            string valueStr = "";
+			if ((token & AsmHighlighterToken.IS_REGISTER) != 0)
+			{
+				tipText = tipText.ToLower();
+				if (token == AsmHighlighterToken.REGISTER_FPU)
+				{
+					tipText = tipText.Replace("(", "");
+					tipText = tipText.Replace(")", "");
+				}
+			}
 
-                            // Make a friendly printable version for float/double and numbers
-                            try
-                            {
-                                if (expression.Type.Contains("double"))
-                                {
-                                    double value = double.Parse(expression.Value);
-                                    valueStr = string.Format("{0:r}", value);
-                                }
-                                else
-                                {
-                                    long value = long.Parse(expression.Value);
-                                    valueStr = string.Format("0x{0:X8}", value);
-                                }
-                            }
-                            catch
-                            {
-                            }
+			span.iStartIndex = selectedTokenInfo.StartIndex;
+			span.iEndIndex = selectedTokenInfo.EndIndex + 1;
 
-                            // Print a printable version only if it's valid
-                            if (string.IsNullOrEmpty(valueStr))
-                            {
-                                tipText = string.Format("{0} = {1}", tipText, expression.Value);
-                            }
-                            else
-                            {
-                                tipText = string.Format("{0} = {1} = {2}", tipText, valueStr, expression.Value);
-                            }
+			// If in debugging mode, display the value
+			// (This is a workaround instead of going through the Debugger.ExpressionEvaluator long way...)
+			// TODO: ExpressionEvaluator is not working, this is a workaround to display values
+			if (!IsDebugging || (token & AsmHighlighterToken.IS_REGISTER) == 0 &&
+				token != AsmHighlighterToken.IDENTIFIER)
+				return result;
 
-                        }
-                    }
-                }
-            }
-            return result;
-        }
+			Expression expression = vs.Debugger.GetExpression(tipText, true, 1000);
+			string valueStr = "";
+
+			// Make a friendly printable version for float/double and numbers
+			try
+			{
+				if (expression.Type.Contains("double"))
+				{
+					double value = double.Parse(expression.Value);
+					valueStr = string.Format("{0:r}", value);
+				}
+				else
+				{
+					long value = long.Parse(expression.Value);
+					valueStr = string.Format("0x{0:X8}", value);
+				}
+			}
+			catch
+			{
+			}
+
+			// Print a printable version only if it's valid
+			if (string.IsNullOrEmpty(valueStr))
+			{
+				tipText = string.Format("{0} = {1}", tipText, expression.Value);
+			}
+			else
+			{
+				tipText = string.Format("{0} = {1} = {2}", tipText, valueStr, expression.Value);
+			}
+			return result;
+		}
 
         private sealed class TestAuthoringScope : AuthoringScope
         {
