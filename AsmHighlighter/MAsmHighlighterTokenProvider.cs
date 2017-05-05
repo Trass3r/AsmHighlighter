@@ -21,7 +21,7 @@ namespace AsmHighlighter
 {
     public sealed class MAsmHighlighterTokenProvider : IAsmHighlighterTokenProvider
     {
-        private static EnumMap<AsmHighlighterToken> map;
+        private static readonly EnumMap<AsmHighlighterToken> map;
 
         static MAsmHighlighterTokenProvider()
         {
@@ -32,7 +32,7 @@ namespace AsmHighlighter
         public AsmHighlighterToken GetTokenFromIdentifier(string text)
         {
             AsmHighlighterToken token;
-            if ( ! map.TryGetValue(text.ToLower(), out token ) )
+            if (!map.TryGetValue(text.ToLowerInvariant(), out token))
             {
                 token = AsmHighlighterToken.IDENTIFIER;
             }

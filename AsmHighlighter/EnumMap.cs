@@ -22,8 +22,7 @@ using System.IO;
 
 namespace AsmHighlighter
 {
-    [Serializable]
-    public sealed class EnumMap<T> : Dictionary<string, T>
+    internal sealed class EnumMap<T> : Dictionary<string, T>
     {
         public void Load(string resource)
         {
@@ -33,25 +32,21 @@ namespace AsmHighlighter
             while ((line = textReader.ReadLine()) != null )
             {
                 int indexEqu = line.IndexOf('=');
-                if ( indexEqu > 0 )
-                {
-                    string enumName = line.Substring(0, indexEqu);
-                    string value = line.Substring(indexEqu + 1, line.Length - indexEqu-1).Trim();
-                    string[] values = value.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
-                    T enumValue = (T)Enum.Parse(typeof(T), enumName);
-                    foreach (string token in values)
-                    {
-                        string tokenLC = token.ToLower();
-                        if (!ContainsKey(tokenLC))
-                        {
-                            Add(tokenLC, enumValue);
-                        } else
-                        {
-                            Trace.WriteLine(string.Format("Warning: token {0} for enum {1} already added for {2}", tokenLC, enumValue, this[token]));
-                        }
-                    }
-                }
+                if (indexEqu <= 0)
+                    continue;
 
+                string enumName = line.Substring(0, indexEqu);
+                string value = line.Substring(indexEqu + 1, line.Length - indexEqu-1).Trim();
+                string[] values = value.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+                T enumValue = (T)Enum.Parse(typeof(T), enumName);
+                foreach (string token in values)
+                {
+                    Debug.Assert(token == token.ToLowerInvariant());
+                    if (!ContainsKey(token))
+                        Add(token, enumValue);
+                    else
+                        Trace.WriteLine(string.Format("Warning: token {0} for enum {1} already added for {2}", token, enumValue, this[token]));
+                }
             }
         }
     }
