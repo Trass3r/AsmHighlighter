@@ -26,7 +26,7 @@
 /**********************************************************************************/
 
 %{
-	public IAsmHighlighterTokenProvider AsmHighlighterTokenProvider = null; // Token provider
+	internal IAsmHighlighterTokenProvider AsmHighlighterTokenProvider = null; // Token provider
 %}
 
 /**********************************************************************************/
@@ -38,11 +38,12 @@ binary              [0-1]
 octal               [0-7]
 digit               [0-9]
 alpha               [a-zA-Z_]
+manglingchars       [?@$<>]
 exponent            [Ee]("+"|"-")?{digit}+
 floatsuffix         [fFhH]
 white_space         [ \t\v\n\f\r]
 hexdigit            [0-9a-fA-F]
-ABStar       [^\*\n]*
+ABStar              [^\*\n]*
 
 /**********************************************************************************/
 /**********************************************************************************/
@@ -72,7 +73,7 @@ ABStar       [^\*\n]*
 "%"({alpha}|{digit})*       {return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);}
 
 /* identifier or keyword */
-{alpha}({alpha}|{digit})*       {return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);}
+({alpha}|[$?])({alpha}|{manglingchars}|{digit})*   {return (int)AsmHighlighterTokenProvider.GetTokenFromIdentifier(yytext);}
 
 
 /**********************************************************************************/
