@@ -121,10 +121,11 @@ namespace AsmHighlighter
 					tokenInfo.Color = (TokenColor)AsmTokenColor.AsmDirective;
 					tokenInfo.Type = TokenType.Keyword;
 					break;
-				case AsmHighlighterToken.SIMDPROCESSOR:
-				case AsmHighlighterToken.SSE4:
+				case AsmHighlighterToken.SSE:
+				case AsmHighlighterToken.FMA3:
+				case AsmHighlighterToken.AVX:
 				case AsmHighlighterToken.AVX2:
-				case AsmHighlighterToken.FMA:
+				case AsmHighlighterToken.AVX512F:
 					tokenInfo.Color = (TokenColor)AsmTokenColor.AsmSimdInstruction;
 					tokenInfo.Type = TokenType.Keyword;
 					break;

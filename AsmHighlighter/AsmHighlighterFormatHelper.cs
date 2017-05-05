@@ -315,20 +315,15 @@ namespace AsmHighlighter
                 AsmHighlighterToken token = (AsmHighlighterToken)lexer.GetNext(ref state, out start, out end);
                 while (token != AsmHighlighterToken.EOF )
                 {
-                    switch (token)
+                    if ((token & AsmHighlighterToken.IS_INSTRUCTION) != 0)
+                        instructionFound = true;
+                    else if (token == AsmHighlighterToken.COMMENT_LINE)
                     {
-                        case AsmHighlighterToken.INSTRUCTION:
-                        case AsmHighlighterToken.FPUPROCESSOR:
-                        case AsmHighlighterToken.SIMDPROCESSOR:
-                            instructionFound = true;
-                            break;
-                        case AsmHighlighterToken.COMMENT_LINE:
-                            if (!commentFound)
-                            {
-                                commentFound = true;
-                                commentStart = start;
-                            }
-                            break;
+                        if (!commentFound)
+                        {
+                            commentFound = true;
+                            commentStart = start;
+                        }
                     }
 
                     if ( instructionFound && commentFound )
