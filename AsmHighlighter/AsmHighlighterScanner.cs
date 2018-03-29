@@ -114,7 +114,7 @@ namespace AsmHighlighter
 					tokenInfo.Type = TokenType.Identifier;
 					break;
 				case AsmHighlighterToken.FPUPROCESSOR:
-					tokenInfo.Color = (TokenColor)AsmTokenColor.AsmFpuInstruction;
+					tokenInfo.Color = (TokenColor)AsmTokenColor.Keyword;
 					tokenInfo.Type = TokenType.Identifier;
 					break;
 				case AsmHighlighterToken.DIRECTIVE:
@@ -126,7 +126,7 @@ namespace AsmHighlighter
 				case AsmHighlighterToken.AVX:
 				case AsmHighlighterToken.AVX2:
 				case AsmHighlighterToken.AVX512F:
-					tokenInfo.Color = (TokenColor)AsmTokenColor.AsmSimdInstruction;
+					tokenInfo.Color = (TokenColor)AsmTokenColor.Keyword;
 					tokenInfo.Type = TokenType.Keyword;
 					break;
 				default:

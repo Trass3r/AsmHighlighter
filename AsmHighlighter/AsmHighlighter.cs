@@ -87,6 +87,7 @@ namespace AsmHighlighter
             Trace.WriteLine (string.Format(CultureInfo.CurrentCulture, "Entering Initialize() of: {0}", this.ToString()));
             base.Initialize();
 
+#if DEBUG
 			// this is unfortunately necessary
 			var mgr = GetService(typeof(SVsFontAndColorCacheManager)) as IVsFontAndColorCacheManager;
 			if (mgr != null)
@@ -98,6 +99,7 @@ namespace AsmHighlighter
 				guid = new Guid(0xA27B4E24, 0xA735, 0x4d1d, 0xB8, 0xE7, 0x97, 0x16, 0xE1, 0xE3, 0xD8, 0xE0);
 				mgr.RefreshCache(ref guid);
 			}
+#endif
 
 			// Proffer the service.
 			var serviceContainer = this as IServiceContainer;

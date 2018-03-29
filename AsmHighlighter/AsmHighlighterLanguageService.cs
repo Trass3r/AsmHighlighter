@@ -22,6 +22,7 @@ using AsmHighlighter.Lexer;
 using EnvDTE;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Package;
+using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace AsmHighlighter
@@ -54,18 +55,19 @@ namespace AsmHighlighter
         {
             m_colorableItems = new ColorableItem[]
             {
-                // the first 6 items in this list are the default items
-                // 0th element "Text" is default and not retrieved by VS
-                new AsmHighlighterColorableItem("Keyword", COLORINDEX.CI_BLUE, COLORINDEX.CI_USERTEXT_BK),
+                // the first 6 items follow standard categories
+                // hidden 0th element "Text" is default and not retrieved by VS
+                // FIXME: custom colors just don't work with themes
+                new AsmHighlighterColorableItem("Keyword", COLORINDEX.CI_BLUE, COLORINDEX.CI_USERTEXT_BK, FONTFLAGS.FF_BOLD),
                 new AsmHighlighterColorableItem("Comment", COLORINDEX.CI_DARKGREEN, COLORINDEX.CI_USERTEXT_BK),
-                new AsmHighlighterColorableItem("Identifier", COLORINDEX.CI_USERTEXT_FG, COLORINDEX.CI_USERTEXT_BK),
-                new AsmHighlighterColorableItem("String", COLORINDEX.CI_MAROON, COLORINDEX.CI_USERTEXT_BK),
-                new AsmHighlighterColorableItem("Number", COLORINDEX.CI_USERTEXT_FG, COLORINDEX.CI_USERTEXT_BK),
+                new AsmHighlighterColorableItem("ASM Identifier", COLORINDEX.CI_USERTEXT_FG, COLORINDEX.CI_USERTEXT_BK),
+                new AsmHighlighterColorableItem("ASM String", COLORINDEX.CI_MAGENTA, COLORINDEX.CI_USERTEXT_BK),
+                new AsmHighlighterColorableItem("ASM Number", COLORINDEX.CI_USERTEXT_FG, COLORINDEX.CI_USERTEXT_BK),
 
-                new AsmHighlighterColorableItem("ASM Register", COLORINDEX.CI_MAROON, COLORINDEX.CI_USERTEXT_BK, FONTFLAGS.FF_BOLD),
-                new AsmHighlighterColorableItem("ASM FpuInstruction", COLORINDEX.CI_AQUAMARINE, COLORINDEX.CI_USERTEXT_BK),
+                new AsmHighlighterColorableItem("ASM Register", COLORINDEX.CI_AQUAMARINE, COLORINDEX.CI_USERTEXT_BK),
+                new AsmHighlighterColorableItem("ASM FpuInstruction", COLORINDEX.CI_DARKBLUE, COLORINDEX.CI_USERTEXT_BK),
                 new AsmHighlighterColorableItem("ASM Directive", COLORINDEX.CI_PURPLE, COLORINDEX.CI_USERTEXT_BK),
-                new AsmHighlighterColorableItem("ASM SimdInstruction", COLORINDEX.CI_AQUAMARINE, COLORINDEX.CI_USERTEXT_BK, FONTFLAGS.FF_BOLD)
+                new AsmHighlighterColorableItem("ASM SimdInstruction", COLORINDEX.CI_DARKBLUE, COLORINDEX.CI_USERTEXT_BK, FONTFLAGS.FF_BOLD)
             };
 
             vs = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(DTE)) as DTE;
@@ -188,8 +190,20 @@ namespace AsmHighlighter
         }
 
         //private bool isHelpContextSet = false;
-        public override void UpdateLanguageContext(LanguageContextHint hint, IVsTextLines buffer, TextSpan[] ptsSelection, Microsoft.VisualStudio.Shell.Interop.IVsUserContext context)
+        public override void UpdateLanguageContext(LanguageContextHint hint, IVsTextLines buffer, TextSpan[] ptsSelection, IVsUserContext context)
         {
+            if (hint == LanguageContextHint.LCH_F1_HELP)
+            {
+                var browsingService = Microsoft.VisualStudio.Shell.Package.GetGlobalService(typeof(SVsWebBrowsingService)) as IVsWebBrowsingService;
+
+                string mnemonic;
+                buffer.GetLineText(ptsSelection[0].iStartLine, ptsSelection[0].iStartIndex, ptsSelection[0].iStartLine, ptsSelection[0].iEndIndex, out mnemonic);
+                mnemonic = mnemonic.Trim();
+                IVsWindowFrame ppFrame;
+                browsingService.Navigate(@"http://www.felixcloutier.com/x86/", (uint)__VSWBNAVIGATEFLAGS.VSNWB_WebURLOnly, out ppFrame);
+                browsingService.Navigate($"http://www.felixcloutier.com/x86/{mnemonic}.html", (uint)__VSWBNAVIGATEFLAGS.VSNWB_ForceNew, out ppFrame);
+            }
+
             // WOULD HAVE BEEN NICE TO HAVE HELP, BUT SEEMS TO BE A LONG WAY TO CREATE AN HXS HELP FILE
             //if (isHelpContextSet)
             //{

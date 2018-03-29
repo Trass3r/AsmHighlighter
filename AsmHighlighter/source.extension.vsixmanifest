@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="AsmHighlighter.374E6EC1-2ADF-4ACC-93DF-CC84E7B26B34" Version="2.0.0" Language="en-US" Publisher="Andreas Hollandt" />
+    <Identity Id="AsmHighlighter.374E6EC1-2ADF-4ACC-93DF-CC84E7B26B34" Version="2.1.0" Language="en-US" Publisher="Andreas Hollandt" />
     <DisplayName>AsmHighlighter</DisplayName>
     <Description xml:space="preserve">AsmHighlighter is an extension to Visual Studio 2015+ that provides syntax highlighting for the x86 ASM language.</Description>
     <MoreInfo>https://github.com/Trass3r/AsmHighlighter</MoreInfo>

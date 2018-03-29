@@ -19,7 +19,7 @@ namespace AsmHighlighter
 {
     public class AsmHighlighterVersion
     {
-        public const string VERSION = "2.0";
+        public const string VERSION = "2.1";
         public const string ASSEMBLY_VERSION = VERSION + ".0.0";
         public const string ASSEMBLY_FILE_VERSION = ASSEMBLY_VERSION;
     }

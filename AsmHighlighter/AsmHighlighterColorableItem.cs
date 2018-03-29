@@ -51,8 +51,7 @@ namespace AsmHighlighter
 
         public override int GetMergingPriority(out int priority)
         {
-           // give priority to VS default colors
-           priority = 0;
+           priority = 0x2000;
            return VSConstants.S_OK;
         }
     }
